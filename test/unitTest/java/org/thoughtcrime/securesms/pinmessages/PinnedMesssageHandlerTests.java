@@ -8,14 +8,14 @@ import org.thoughtcrime.securesms.database.MessagingDatabase;
 import org.thoughtcrime.securesms.database.MmsDatabase;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.database.SmsDatabase;
-import org.thoughtcrime.securesms.PinnedMessagesHandler;
-import org.thoughtcrime.securesms.PinnedMessagesMocks;
+import org.thoughtcrime.securesms.PinnedMessageHandler;
+import org.thoughtcrime.securesms.PinnedMessageMocks;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
+public class PinnedMesssageHandlerTests extends PinnedMessageMocks {
 
     @Override
     @Before
@@ -36,14 +36,14 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
 
     @Test
     public void testPinHandleGetAppropriateDatabase() {
-        PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+        PinnedMessageHandler handler = new PinnedMessageHandler(context);
         assertEquals(handler.getAppropriateDatabase(messageRecordSms), smsDatabase);
         assertEquals(handler.getAppropriateDatabase(messageRecordMms), mmsDatabase);
     }
 
     @Test
     public void testHandlerPinMessagesSmsSuccess() {
-        PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+        PinnedMessageHandler handler = new PinnedMessageHandler(context);
         boolean result = handler.handlePinMessage(messageRecordSms, smsDatabase);
 
         verify(smsDatabase).pinMessage(1);
@@ -52,7 +52,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
 
     @Test
     public void testHandlerPinMessagesMmsSuccess() {
-        PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+        PinnedMessageHandler handler = new PinnedMessageHandler(context);
         boolean result = handler.handlePinMessage(messageRecordMms, mmsDatabase);
 
         verify(mmsDatabase).pinMessage(1);
@@ -63,7 +63,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
     public void testHandlerPinMessageSmsFailureOnAlreadyPinned() {
         setMockGetIdReturnValue(2);
 
-        PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+        PinnedMessageHandler handler = new PinnedMessageHandler(context);
         boolean result = handler.handlePinMessage(messageRecordSms, smsDatabase);
 
         verify(smsDatabase).pinMessage(2);
@@ -74,7 +74,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
     public void testHandlerPinMessageMmsFailureOnAlreadyPinned() {
         setMockGetIdReturnValue(2);
 
-        PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+        PinnedMessageHandler handler = new PinnedMessageHandler(context);
         boolean result = handler.handlePinMessage(messageRecordMms, mmsDatabase);
 
         verify(mmsDatabase).pinMessage(2);
@@ -85,7 +85,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
     public void testHandlerPinMessageSmsOnNotExist() {
         setMockGetIdReturnValue(3);
 
-        PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+        PinnedMessageHandler handler = new PinnedMessageHandler(context);
         boolean result = handler.handlePinMessage(messageRecordSms, smsDatabase);
 
         verify(smsDatabase).pinMessage(3);
@@ -96,7 +96,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
     public void testHandlerPinMessageMmsOnNotExist() {
         setMockGetIdReturnValue(3);
 
-        PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+        PinnedMessageHandler handler = new PinnedMessageHandler(context);
         boolean result = handler.handlePinMessage(messageRecordMms, mmsDatabase);
 
         verify(mmsDatabase).pinMessage(3);
@@ -107,7 +107,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
     public void testHandlerUnpinMethodSmsMessagedAlreadyPinned() {
         setMockGetIdReturnValue(1);
 
-        PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+        PinnedMessageHandler handler = new PinnedMessageHandler(context);
         boolean result = handler.handleUnpinMessage(messageRecordSms, smsDatabase);
 
         verify(smsDatabase).unpinMessage(1);
@@ -118,7 +118,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
     public void testHandlerUnpinMethodMmsMessagedAlreadyPinned() {
         setMockGetIdReturnValue(1);
 
-        PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+        PinnedMessageHandler handler = new PinnedMessageHandler(context);
         boolean result = handler.handleUnpinMessage(messageRecordMms, mmsDatabase);
 
         verify(mmsDatabase).unpinMessage(1);
@@ -129,7 +129,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
     public void testHandlerUnpinMethodSmsSuccess() {
         setMockGetIdReturnValue(2);
 
-        PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+        PinnedMessageHandler handler = new PinnedMessageHandler(context);
         boolean result = handler.handleUnpinMessage(messageRecordSms, smsDatabase);
 
         verify(smsDatabase).unpinMessage(2);
@@ -140,7 +140,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
     public void testHandlerUnpinMethodMmsSuccess() {
         setMockGetIdReturnValue(2);
 
-        PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+        PinnedMessageHandler handler = new PinnedMessageHandler(context);
         boolean result = handler.handleUnpinMessage(messageRecordMms, mmsDatabase);
 
         verify(mmsDatabase).unpinMessage(2);

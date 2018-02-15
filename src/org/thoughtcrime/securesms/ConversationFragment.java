@@ -248,7 +248,7 @@ public class ConversationFragment extends Fragment
   }
 
   private void setCorrectPinVisibility(Menu menu, MessageRecord messageRecord, boolean actionMessage) {
-    PinnedMessagesHandler pinHandler = new PinnedMessagesHandler(getContext());
+    PinnedMessageHandler pinHandler = new PinnedMessageHandler(getContext());
     MessagingDatabase databaseToQuery = pinHandler.getAppropriateDatabase(messageRecord);
 
     if (databaseToQuery.isPinned(messageRecord.getId())) {
@@ -326,8 +326,8 @@ public class ConversationFragment extends Fragment
   }
 
   public void handlePinOrUnpinMessage(final MessageRecord message, boolean pin,
-                                      PinnedMessagesHandler handler) {
-    PinnedMessagesHandler pinHandler;
+                                      PinnedMessageHandler handler) {
+    PinnedMessageHandler pinHandler;
     MessagingDatabase     databaseToQuery;
     String                outputMessage;
     boolean               result;
@@ -722,12 +722,12 @@ public class ConversationFragment extends Fragment
           return true;
         case R.id.menu_context_pin_message:
           handlePinOrUnpinMessage(getSelectedMessageRecord(), true,
-                  new PinnedMessagesHandler(getContext()));
+                  new PinnedMessageHandler(getContext()));
           actionMode.finish();
           return true;
         case R.id.menu_context_unpin_message:
           handlePinOrUnpinMessage(getSelectedMessageRecord(), false,
-                  new PinnedMessagesHandler(getContext()));
+                  new PinnedMessageHandler(getContext()));
           actionMode.finish();
           return true;
       }

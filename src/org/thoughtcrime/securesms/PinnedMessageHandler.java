@@ -6,10 +6,10 @@ import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.MessagingDatabase;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
 
-public class PinnedMessagesHandler {
+public class PinnedMessageHandler {
     Context context;
 
-    public PinnedMessagesHandler(Context context) {
+    public PinnedMessageHandler(Context context) {
         this.context = context;
     }
 

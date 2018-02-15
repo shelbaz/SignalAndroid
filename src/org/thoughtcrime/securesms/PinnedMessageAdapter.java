@@ -18,17 +18,13 @@ package org.thoughtcrime.securesms;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.thoughtcrime.securesms.crypto.MasterSecret;
@@ -111,7 +107,7 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
         unpinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+                PinnedMessageHandler handler = new PinnedMessageHandler(context);
                 handler.handleUnpinMessage(record, DatabaseFactory.getSmsDatabase(context));
 
                 ((ViewGroup)v.getParent().getParent().getParent()).removeAllViews();

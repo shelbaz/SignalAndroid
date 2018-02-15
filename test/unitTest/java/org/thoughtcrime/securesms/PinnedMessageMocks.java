@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DatabaseFactory.class})
-public class PinnedMessagesMocks extends BaseUnitTest {
+public class PinnedMessageMocks extends BaseUnitTest {
     protected Context                   context;
     protected DatabaseFactory           databaseFactory;
     protected MessageRecord             messageRecordSms;

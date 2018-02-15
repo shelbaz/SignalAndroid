@@ -18,18 +18,13 @@ import org.thoughtcrime.securesms.crypto.MasterSecret;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
 public class PinnedMessageFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
     private static final String ARG_THREADID = "threadId";
-
-    private long mThreadId;
-
-    private RecyclerView recyclerView;
-    private PinnedMessageAdapter adapter;
-    private MasterSecret masterSecret;
-
+    private long                          mThreadId;
+    private RecyclerView                  recyclerView;
+    private PinnedMessageAdapter          adapter;
+    private MasterSecret                  masterSecret;
     private OnFragmentInteractionListener mListener;
-
-    public PinnedMessageFragment() {
-    }
 
     public static PinnedMessageFragment newInstance(long threadId) {
         PinnedMessageFragment fragment = new PinnedMessageFragment();
@@ -45,26 +40,21 @@ public class PinnedMessageFragment extends Fragment implements LoaderManager.Loa
         if (getArguments() != null) {
             mThreadId = getArguments().getLong(ARG_THREADID);
         }
-
-        this.mThreadId = getActivity().getIntent().getLongExtra("THREADID",-1);
+        this.mThreadId = getActivity().getIntent().getLongExtra("THREADID", -1);
         this.masterSecret = getArguments().getParcelable("master_secret");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.pinned_message_fragment, container, false);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
         recyclerView = ViewUtil.findById(view, android.R.id.list);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(null);
-
         adapter = new PinnedMessageAdapter(getActivity(), null, masterSecret);
         recyclerView.setAdapter(adapter);
-
         getLoaderManager().initLoader(1, null, this);
-
         return view;
     }
 
@@ -77,7 +67,7 @@ public class PinnedMessageFragment extends Fragment implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.v("pinFragment", "on create loader");
-        return new PinMessagesLoader(getActivity(), this.mThreadId, 10);
+        return new PinnedMessageLoader(getActivity(), this.mThreadId, 10);
     }
 
     @Override
@@ -87,9 +77,7 @@ public class PinnedMessageFragment extends Fragment implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
+    public void onLoaderReset(Loader<Cursor> loader) {}
 
     @Override
     public void onAttach(Activity activity) {
@@ -102,7 +90,7 @@ public class PinnedMessageFragment extends Fragment implements LoaderManager.Loa
         mListener = null;
     }
 
-    public void setThreadId(long mThreadId){
+    public void setThreadId(long mThreadId) {
         this.mThreadId = mThreadId;
     }
 
