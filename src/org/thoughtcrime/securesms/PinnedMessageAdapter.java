@@ -41,20 +41,18 @@ import org.thoughtcrime.securesms.util.views.Stub;
 import java.util.Locale;
 
 public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdapter.ViewHolder> {
-    private Cursor               dataCursor;
     private Context              context;
+    private Cursor               dataCursor;
     private MmsSmsDatabase       db;
-    private MasterSecret         masterSecret;
-    private RecyclerView.Adapter adapter;
-    private View                 view;
     private GlideRequests        glideRequests;
+    private MasterSecret         masterSecret;
+    private View                 view;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private Stub<ThumbnailView> mediaThumbnailStub;
         public TextView messageContent;
         public TextView recipient;
         public TextView time;
-        private @NonNull
-        Stub<ThumbnailView> mediaThumbnailStub;
 
         public ViewHolder(View v) {
             super(v);
@@ -70,7 +68,6 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
         context = mContext;
         db = DatabaseFactory.getMmsSmsDatabase(mContext);
         this.masterSecret = masterSecret;
-        this.adapter = this;
         this.glideRequests = glideRequests;
     }
 
