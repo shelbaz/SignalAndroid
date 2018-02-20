@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.support.v4.app.LoaderManager;
 
 import org.thoughtcrime.securesms.crypto.MasterSecret;
+import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
 public class PinnedMessageFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -52,7 +53,7 @@ public class PinnedMessageFragment extends Fragment implements LoaderManager.Loa
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(null);
-        adapter = new PinnedMessageAdapter(getActivity(), null, masterSecret);
+        adapter = new PinnedMessageAdapter(getActivity(), null, masterSecret, GlideApp.with(this));
         recyclerView.setAdapter(adapter);
         getLoaderManager().initLoader(1, null, this);
         return view;

@@ -19,6 +19,7 @@ package org.thoughtcrime.securesms;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,43 +28,50 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.thoughtcrime.securesms.components.ThumbnailView;
 import org.thoughtcrime.securesms.crypto.MasterSecret;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.MmsSmsDatabase;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
+import org.thoughtcrime.securesms.database.model.MmsMessageRecord;
+import org.thoughtcrime.securesms.mms.GlideRequests;
 import org.thoughtcrime.securesms.util.DateUtils;
+import org.thoughtcrime.securesms.util.views.Stub;
 
 import java.util.Locale;
 
 public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdapter.ViewHolder> {
-    private Cursor                      dataCursor;
-    private Context                     context;
-    private MmsSmsDatabase              db;
-    private MasterSecret                masterSecret;
-    private RecyclerView.Adapter        adapter;
-    private View                        view;
-
+    private Cursor               dataCursor;
+    private Context              context;
+    private MmsSmsDatabase       db;
+    private MasterSecret         masterSecret;
+    private RecyclerView.Adapter adapter;
+    private View                 view;
+    private GlideRequests        glideRequests;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView messageContent;
         public TextView recipient;
         public TextView time;
+        private @NonNull
+        Stub<ThumbnailView> mediaThumbnailStub;
 
         public ViewHolder(View v) {
             super(v);
             messageContent = (TextView) v.findViewById(R.id.pinned_message_body);
-            recipient      = (TextView) v.findViewById(R.id.pinned_message_recipient);
-            time           = (TextView) v.findViewById(R.id.conversation_item_date);
+            recipient = (TextView) v.findViewById(R.id.pinned_message_recipient);
+            time = (TextView) v.findViewById(R.id.conversation_item_date);
+            mediaThumbnailStub = new Stub<>(v.findViewById(R.id.pinned_image_view_stub));
         }
     }
 
-    public PinnedMessageAdapter(Activity mContext, Cursor cursor, MasterSecret masterSecret) {
-        dataCursor        = cursor;
-        context           = mContext;
-        db                = DatabaseFactory.getMmsSmsDatabase(mContext);
+    public PinnedMessageAdapter(Activity mContext, Cursor cursor, MasterSecret masterSecret, GlideRequests glideRequests) {
+        dataCursor = cursor;
+        context = mContext;
+        db = DatabaseFactory.getMmsSmsDatabase(mContext);
         this.masterSecret = masterSecret;
-        this.adapter      = this;
-
+        this.adapter = this;
+        this.glideRequests = glideRequests;
     }
 
     @Override
@@ -97,26 +105,34 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
         MmsSmsDatabase.Reader reader = db.readerFor(dataCursor, masterSecret);
         MessageRecord record = reader.getCurrent();
 
+        if (record.isMms()) {
+            holder.mediaThumbnailStub.get().setImageResource(masterSecret, glideRequests,
+                    ((MmsMessageRecord) record).getSlideDeck().getThumbnailSlide(),
+                    false, false);
+            holder.mediaThumbnailStub.get().setVisibility(View.VISIBLE);
+        }
+
         this.setMessageView(record, holder);
 
         holder.messageContent.setText(record.getDisplayBody().toString());
         holder.time.setText(DateUtils.getExtendedRelativeTimeSpanString(context, new Locale("en", "CA"),
                 record.getTimestamp()));
 
-        Button unpinButton = (Button)view.findViewById(R.id.unpin_button);
+        Button unpinButton = (Button) view.findViewById(R.id.unpin_button);
         unpinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PinnedMessageHandler handler = new PinnedMessageHandler(context);
-                handler.handleUnpinMessage(record, DatabaseFactory.getSmsDatabase(context));
 
-                ((ViewGroup)v.getParent().getParent().getParent()).removeAllViews();
+                handler.handleUnpinMessage(record, handler.getAppropriateDatabase(record));
+
+                ((ViewGroup) v.getParent().getParent().getParent()).removeAllViews();
             }
         });
     }
 
     private void setMessageView(MessageRecord record, ViewHolder viewHolder) {
-        if(!record.isOutgoing()) {
+        if (!record.isOutgoing()) {
             viewHolder.recipient.setText(record.getRecipient().getName());
         }
     }
