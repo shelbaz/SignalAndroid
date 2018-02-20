@@ -335,8 +335,7 @@ public class ConversationFragment extends Fragment
     pinHandler       = handler;
     databaseToQuery  = pinHandler.getAppropriateDatabase(message);
 
-    if(!message.isMms()) {
-      if (pin) {
+    if (pin) {
         result = pinHandler.handlePinMessage(message, databaseToQuery);
 
         if (result) {
@@ -354,9 +353,6 @@ public class ConversationFragment extends Fragment
           outputMessage = getString(R.string.ConversationFragment_unpin_already_unpinned);
         }
       }
-    } else {
-      outputMessage = getString(R.string.ConversationFragment_pin_mms_error_message);
-    }
 
     showToast(outputMessage);
   }
