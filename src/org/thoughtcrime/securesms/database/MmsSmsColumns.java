@@ -67,6 +67,9 @@ public interface MmsSmsColumns {
     protected static final long END_SESSION_BIT    = 0x400000;
     protected static final long PUSH_MESSAGE_BIT   = 0x200000;
 
+    // Pinned Message Information
+    protected static final long PINNED_MESSAGE_BIT = 0x100000;
+
     // Group Message Information
     protected static final long GROUP_UPDATE_BIT            = 0x10000;
     protected static final long GROUP_QUIT_BIT              = 0x20000;
@@ -140,6 +143,10 @@ public interface MmsSmsColumns {
 
     public static boolean isSecureType(long type) {
       return (type & SECURE_MESSAGE_BIT) != 0;
+    }
+
+    public static boolean isPinned(long type) {
+      return (type & PINNED_MESSAGE_BIT) != 0;
     }
 
     public static boolean isPushType(long type) {

@@ -38,6 +38,9 @@ public abstract class MessagingDatabase extends Database implements MmsSmsColumn
 
   public abstract void markAsSent(long messageId, boolean secure);
 
+  public abstract void markAsPinned(long messageId);
+  public abstract void markAsUnpinned(long messageId);
+
   public boolean pinMessage(long messageId) {
     Log.w("MessageDatabase", "Pinning: " + messageId);
 

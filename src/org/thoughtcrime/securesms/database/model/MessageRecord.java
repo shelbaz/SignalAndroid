@@ -82,6 +82,10 @@ public abstract class MessageRecord extends DisplayRecord {
     return MmsSmsColumns.Types.isSecureType(type);
   }
 
+  public boolean isPinned() {
+    return MmsSmsColumns.Types.isPinned(type);
+  }
+
   public boolean isLegacyMessage() {
     return MmsSmsColumns.Types.isLegacyType(type);
   }
