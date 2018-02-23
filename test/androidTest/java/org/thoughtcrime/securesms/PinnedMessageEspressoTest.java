@@ -26,7 +26,6 @@ public class PinnedMessageEspressoTest {
             .goPinned();
     }
 
-
     @Test
     public void pageDisplaysOwnNumber() {
         Helper helper = new Helper(mainActivityRule);
@@ -78,7 +77,6 @@ public class PinnedMessageEspressoTest {
                 .assertText(testString);
     }
 
-
     @Test
     public void unpinnedMessagesAreNotShown() {
         Helper helper = new Helper(mainActivityRule);
@@ -98,7 +96,6 @@ public class PinnedMessageEspressoTest {
                 .assertNoText(testString);
     }
 
-
     @Test
     public void canUnpinMessagesFromList() {
         Helper helper = new Helper(mainActivityRule);
@@ -112,6 +109,42 @@ public class PinnedMessageEspressoTest {
                 .pinMessage(0)
             .goPinned()
                 .assertText(testString)
+                .unpinMessage(0)
+                .assertNoText(testString);
+    }
+
+    @Test
+    public void canPinImageMms() {
+        Helper helper = new Helper(mainActivityRule);
+
+        String testString = helper.randString();
+
+        helper
+            .goConversations()
+            .goConversation()
+                .sendImage(testString)
+                .pinMessage(0)
+            .goPinned()
+                .assertText(testString)
+                .assertId(R.id.thumbnail_image);
+    }
+
+    @Test
+    public void canUnpinImageMms() {
+        Helper helper = new Helper(mainActivityRule);
+
+        String testString = helper.randString();
+
+        helper
+            .goConversations()
+            .goConversation()
+                .sendImage(testString)
+                .pinMessage(0)
+                .unpinMessage(0)
+            .goPinned()
+            .goConversation()
+                .pinMessage(0)
+            .goPinned()
                 .unpinMessage(0)
                 .assertNoText(testString);
     }
