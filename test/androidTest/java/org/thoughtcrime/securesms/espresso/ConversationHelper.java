@@ -14,12 +14,25 @@ import static android.support.test.espresso.contrib.RecyclerViewActions.actionOn
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class ConversationHelper extends Helper<ConversationHelper> {
+public class ConversationHelper extends BaseHelper<ConversationHelper> {
     ConversationHelper(HelperSecret s) {}
 
     private Boolean messageSelected = false;
 
     public ConversationHelper sendMessage(String message) {
+        onView(withId(R.id.embedded_text_editor))
+                .perform(typeText(message));
+        onView(withId(R.id.send_button))
+                .perform(click());
+
+        return this;
+    }
+
+    public ConversationHelper sendImage(String message) {
+        onView(withId(R.id.quick_camera_toggle))
+                .perform(click());
+        onView(withId(R.id.shutter_button))
+                .perform(click());
         onView(withId(R.id.embedded_text_editor))
                 .perform(typeText(message));
         onView(withId(R.id.send_button))
