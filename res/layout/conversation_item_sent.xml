@@ -67,6 +67,7 @@
                            android:tint="?conversation_item_sent_text_secondary_color"
                            android:contentDescription="@string/conversation_item__pinned_message_description"
                            android:visibility="gone"
+                           android:alpha=".6"
                            tools:visibility="visible"/>
 
                 <org.thoughtcrime.securesms.components.emoji.EmojiTextView
