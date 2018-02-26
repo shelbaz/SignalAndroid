@@ -792,6 +792,7 @@
     <!-- conversation_item -->
     <string name="conversation_item__mms_image_description">Media message</string>
     <string name="conversation_item__secure_message_description">Secure message</string>
+    <string name="conversation_item__pinned_message_description">Pinned message</string>
 
     <!-- conversation_item_sent -->
     <string name="conversation_item_sent__send_failed_indicator_description">Send Failed</string>
