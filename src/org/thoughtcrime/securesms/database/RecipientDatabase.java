@@ -503,7 +503,7 @@ public class RecipientDatabase extends Database {
       this.signalProfileName     = signalProfileName;
       this.signalProfileAvatar   = signalProfileAvatar;
       this.profileSharing        = profileSharing;
-      this.nickname = nickname;
+      this.nickname              = nickname;
     }
 
     public @Nullable MaterialColor getColor() {

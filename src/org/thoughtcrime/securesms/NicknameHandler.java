@@ -7,7 +7,7 @@ import org.thoughtcrime.securesms.database.RecipientDatabase;
 import org.thoughtcrime.securesms.recipients.Recipient;
 
 public class NicknameHandler {
-    private Context context;
+    private Context           context;
     private RecipientDatabase recipientDatabase;
 
     public NicknameHandler(Context context) {
@@ -22,6 +22,7 @@ public class NicknameHandler {
     /**
      * This method is implemented for only testing purposes inorder
      * to pass mocked database object
+     *
      * @param recipientDatabase
      * @return
      */
@@ -35,6 +36,7 @@ public class NicknameHandler {
      * of a recipient. If the new nickname is identical to the
      * old one, then it will return false, otherwise, the nickname
      * will be updated and this will return true.
+     *
      * @param recipient
      * @param nickname
      * @return boolean indicating whether the nickname was set or not
@@ -48,6 +50,7 @@ public class NicknameHandler {
      * The method helps the developer to set the proper database
      * without worrying about the details. This method is used
      * in production only.
+     *
      * @return NicknameHandler
      */
     public NicknameHandler setupDatabaseHandler() {
