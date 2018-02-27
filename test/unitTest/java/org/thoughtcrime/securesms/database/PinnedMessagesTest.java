@@ -34,8 +34,8 @@ public class PinnedMessagesTest extends PinnedMessagesMocks {
 
     @Test
     public void testUnpinMessageMethod() {
-        assertEquals(messagingDatabase.unpinMessage(1), true);
-        assertEquals(messagingDatabase.unpinMessage(2), false);
+        assertEquals(messagingDatabase.unpinMessage(1), false);
+        assertEquals(messagingDatabase.unpinMessage(2), true);
         assertEquals(messagingDatabase.unpinMessage(3), false);
 
         verify(messagingDatabase).unpinMessage(1);

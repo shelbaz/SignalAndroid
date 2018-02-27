@@ -20,8 +20,6 @@ public class NicknameHandler {
     }
 
     /**
-     * This method allows the developer to set the underlining database
-     * to any kind of database object passed in the parameter
      * This method is implemented for only testing purposes inorder
      * to pass mocked database object
      * @param recipientDatabase
@@ -44,14 +42,6 @@ public class NicknameHandler {
     public boolean setNickname(Recipient recipient, String nickname) {
         this.setupDatabaseHandler();
         return this.recipientDatabase.setNickname(recipient, nickname);
-    }
-
-    // TODO by DAN
-    public boolean removeNickname(Recipient recipient) {
-        this.setupDatabaseHandler();
-
-        // TODO call the correct remove method
-        return true;
     }
 
     /**

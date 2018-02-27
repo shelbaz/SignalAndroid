@@ -44,13 +44,13 @@ public class RecipientDatabase extends Database {
   private static final String REGISTERED              = "registered";
   private static final String PROFILE_KEY             = "profile_key";
   private static final String SYSTEM_DISPLAY_NAME     = "system_display_name";
-  private static final String SYSTEM_PHOTO_URI      = "system_contact_photo";
-  private static final String SYSTEM_PHONE_LABEL    = "system_phone_label";
-  private static final String SYSTEM_CONTACT_URI    = "system_contact_uri";
-  private static final String SIGNAL_PROFILE_NAME   = "signal_profile_name";
-  private static final String SIGNAL_PROFILE_AVATAR = "signal_profile_avatar";
-  private static final String PROFILE_SHARING       = "profile_sharing_approval";
-  private static final String NICKNAME              = "nick_name";
+  private static final String SYSTEM_PHOTO_URI        = "system_contact_photo";
+  private static final String SYSTEM_PHONE_LABEL      = "system_phone_label";
+  private static final String SYSTEM_CONTACT_URI      = "system_contact_uri";
+  private static final String SIGNAL_PROFILE_NAME     = "signal_profile_name";
+  private static final String SIGNAL_PROFILE_AVATAR   = "signal_profile_avatar";
+  private static final String PROFILE_SHARING         = "profile_sharing_approval";
+  private static final String NICKNAME                = "nick_name";
 
   private static final String[] RECIPIENT_PROJECTION = new String[] {
       BLOCK, NOTIFICATION, VIBRATE, MUTE_UNTIL, COLOR, SEEN_INVITE_REMINDER, DEFAULT_SUBSCRIPTION_ID, EXPIRE_MESSAGES, REGISTERED,

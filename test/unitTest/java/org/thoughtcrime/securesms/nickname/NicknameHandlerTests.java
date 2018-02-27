@@ -17,7 +17,6 @@ public class NicknameHandlerTests extends NicknameMocks {
     public void setUp() throws Exception {
         super.setUp();
         super.setupRecipientObject();
-        super.setupRemoveNicknameMethod();
         super.setupStaticRecipientDatabase();
         super.setupSetNicknameMethod();
     }

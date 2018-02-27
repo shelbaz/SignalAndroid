@@ -15,7 +15,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockingDetails;
 import static org.mockito.Mockito.when;
 
-
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DatabaseFactory.class})
 public class NicknameMocks extends BaseUnitTest {
@@ -38,11 +37,6 @@ public class NicknameMocks extends BaseUnitTest {
 
         when(recipientDatabase.setNickname(recipient, "new test")).thenReturn(true)
                 .thenReturn(false);
-
-    }
-
-    // TODO add removeNickname mock
-    protected void setupRemoveNicknameMethod() {
 
     }
 
