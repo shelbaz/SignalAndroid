@@ -125,6 +125,20 @@ public class PinnedMessageEspressoTest {
             .goConversation()
                 .sendMessage("Hello World!")
                 .pinMessage(1)
-                .assertIdAt(R.id.pinned_indicator, 1);
+                .assertIdAt(R.id.pinned_indicator, 1, true);
+    }
+
+    @Test
+    public void unpinnedMessagesDoesNotHaveIndicator() {
+        Helper helper = new Helper(mainActivityRule);
+
+        helper
+            .goConversations()
+            .goConversation()
+                .sendMessage("Hello World!")
+                .pinMessage(1)
+                .assertIdAt(R.id.pinned_indicator, 1, true)
+                .unpinMessage(1)
+                .assertNoIdAt(R.id.pinned_indicator, 1, true);
     }
 }
