@@ -32,10 +32,9 @@ public class NicknameHandler {
     }
 
     /**
-     * This method responsible for setting the nick name
-     * of a recipient. If the new nickname is identical to the
-     * old one, then it will return false, otherwise, the nickname
-     * will be updated and this will return true.
+     * If the new nickname is identical to theold one, then
+     * it will return false, otherwise, the nickname will be
+     * updated and this will return true.
      *
      * @param recipient
      * @param nickname

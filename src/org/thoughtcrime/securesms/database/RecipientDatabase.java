@@ -119,7 +119,7 @@ public class RecipientDatabase extends Database {
           SIGNAL_PROFILE_NAME + " TEXT DEFAULT NULL, " +
           SIGNAL_PROFILE_AVATAR + " TEXT DEFAULT NULL, " +
           PROFILE_SHARING + " INTEGER DEFAULT 0, " +
-              NICKNAME + " TEXT DEFAULT 'null');";
+          NICKNAME + " TEXT DEFAULT 'null');";
 
   public RecipientDatabase(Context context, SQLiteOpenHelper databaseHelper) {
     super(context, databaseHelper);
@@ -174,7 +174,6 @@ public class RecipientDatabase extends Database {
     String  signalProfileAvatar   = cursor.getString(cursor.getColumnIndexOrThrow(SIGNAL_PROFILE_AVATAR));
     boolean profileSharing        = cursor.getInt(cursor.getColumnIndexOrThrow(PROFILE_SHARING))      == 1;
 
-
     MaterialColor color;
     byte[]        profileKey = null;
 
@@ -202,7 +201,7 @@ public class RecipientDatabase extends Database {
                                              profileKey, systemDisplayName, systemContactPhoto,
                                              systemPhoneLabel, systemContactUri,
                                              signalProfileName, signalProfileAvatar, profileSharing,
-                                              nickname));
+                                             nickname));
   }
 
   public BulkOperationsHandle resetAllSystemContactInfo() {
@@ -244,7 +243,7 @@ public class RecipientDatabase extends Database {
   public boolean setNickname(@Nullable Recipient recipient, String nickname) {
     ContentValues values = new ContentValues();
     values.put(NICKNAME, nickname);
-    return processNicknameSqlRequest(values, recipient.getAddress()) > 0 ? true : false;
+    return processNicknameSqlRequest(values, recipient.getAddress()) > 0;
   }
 
   public void setRingtone(@NonNull Recipient recipient, @Nullable Uri notification) {
@@ -327,9 +326,15 @@ public class RecipientDatabase extends Database {
 
   private int processNicknameSqlRequest(ContentValues values, Address address) {
     SQLiteDatabase db = databaseHelper.getWritableDatabase();
-    return db.update(this.TABLE_NAME, values, ADDRESS + " = ? AND " +
-                    NICKNAME + " NOT Like ? ",
-            new String[] {address.serialize(),values.getAsString(NICKNAME)});
+    return db.update(
+      this.TABLE_NAME,
+      values,
+          ADDRESS + " = ? AND " +
+          NICKNAME + " NOT Like ? ",
+      new String[] {
+          address.serialize(),
+          values.getAsString(NICKNAME)
+      });
   }
 
   public void setRegistered(@NonNull Recipient recipient, RegisteredState registeredState) {
@@ -466,7 +471,6 @@ public class RecipientDatabase extends Database {
     private final String          signalProfileName;
     private final String          signalProfileAvatar;
     private final boolean         profileSharing;
-
 
     RecipientSettings(boolean blocked, long muteUntil,
                       @NonNull VibrateState vibrateState,
