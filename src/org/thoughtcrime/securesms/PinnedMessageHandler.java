@@ -32,4 +32,5 @@ public class PinnedMessageHandler {
     public boolean handleUnpinMessage(final MessageRecord message, MessagingDatabase databaseToQuery) {
         return databaseToQuery.unpinMessage(message.getId());
     }
+
 }

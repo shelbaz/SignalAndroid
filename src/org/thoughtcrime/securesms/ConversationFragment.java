@@ -327,7 +327,7 @@ public class ConversationFragment extends Fragment
 
   public void handlePinOrUnpinMessage(final MessageRecord message, boolean pin,
                                       PinnedMessageHandler handler) {
-    PinnedMessageHandler pinHandler;
+    PinnedMessageHandler  pinHandler;
     MessagingDatabase     databaseToQuery;
     String                outputMessage;
     boolean               result;
@@ -336,6 +336,14 @@ public class ConversationFragment extends Fragment
     databaseToQuery  = pinHandler.getAppropriateDatabase(message);
 
     if (pin) {
+      // Blocking Video and Audio pinning Temporarily
+        if(message.isMms()) {
+          MediaMmsMessageRecord mediaMessage = (MediaMmsMessageRecord) message;
+          if (!mediaMessage.getSlideDeck().getThumbnailSlide().getContentType().contains("image")) {
+            showToast("You can only pin image type mms!");
+            return;
+          }
+        }
         result = pinHandler.handlePinMessage(message, databaseToQuery);
 
         if (result) {
@@ -354,9 +362,8 @@ public class ConversationFragment extends Fragment
         }
       }
 
-    showToast(outputMessage);
+    this.showToast(outputMessage);
   }
-
 
   private void handleDeleteMessages(final Set<MessageRecord> messageRecords) {
     int                 messagesCount = messageRecords.size();
