@@ -125,7 +125,7 @@ public class PinnedMessageEspressoTest {
             .goConversation()
                 .sendMessage("Hello World!")
                 .pinMessage(1)
-                .assertIdAt(R.id.pinned_indicator, 1, true);
+                .assertVisibleIdAt(R.id.pinned_indicator, 1);
     }
 
     @Test
@@ -137,8 +137,8 @@ public class PinnedMessageEspressoTest {
             .goConversation()
                 .sendMessage("Hello World!")
                 .pinMessage(1)
-                .assertIdAt(R.id.pinned_indicator, 1, true)
+                .assertVisibleIdAt(R.id.pinned_indicator, 1)
                 .unpinMessage(1)
-                .assertNoIdAt(R.id.pinned_indicator, 1, true);
+                .assertNoVisibleIdAt(R.id.pinned_indicator, 1);
     }
 }
