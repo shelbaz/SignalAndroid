@@ -599,9 +599,19 @@ public class ConversationItem extends LinearLayout
     }
   }
 
-  private class ThumbnailClickListener implements SlideClickListener {
+  public class ThumbnailClickListener implements SlideClickListener {
+    boolean pin = false;
+
+    public ThumbnailClickListener() {}
+
+    public ThumbnailClickListener(MessageRecord record) {
+        conversationRecipient = record.getRecipient();
+        messageRecord         = record;
+        pin                   = true;
+    }
+
     public void onClick(final View v, final Slide slide) {
-      if (shouldInterceptClicks(messageRecord) || !batchSelected.isEmpty()) {
+      if (shouldInterceptClicks(messageRecord) || !batchSelected.isEmpty() && !pin) {
         performClick();
       } else if (MediaPreviewActivity.isContentTypeSupported(slide.getContentType()) && slide.getUri() != null) {
         Intent intent = new Intent(context, MediaPreviewActivity.class);
