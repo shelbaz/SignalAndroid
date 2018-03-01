@@ -54,12 +54,12 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
     private RecyclerView.Adapter adapter;
     private View                 view;
 
-    public PinnedMessageAdapter(Activity mContext, Cursor cursor, MasterSecret masterSecret) {
-        this.context      = mContext;
-        this.dataCursor   = cursor;
-        this.db           = DatabaseFactory.getMmsSmsDatabase(mContext);
+    public PinnedMessageAdapter(Activity mContext, Cursor cursor, MasterSecret masterSecret, GlideRequests glideRequests) {
+        this.context       = mContext;
+        this.dataCursor    = cursor;
+        this.db            = DatabaseFactory.getMmsSmsDatabase(mContext);
         this.glideRequests = glideRequests;
-        this.masterSecret = masterSecret;
+        this.masterSecret  = masterSecret;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -115,7 +115,7 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
             builder.setCancelable(true);
 
             builder.setPositiveButton(R.string.yes, (dialog, id) -> {
-                PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
+                PinnedMessageHandler handler = new PinnedMessageHandler(context);
                 handler.handleUnpinMessage(record, DatabaseFactory.getSmsDatabase(context));
 
                 ((ViewGroup)v.getParent().getParent()).removeAllViews();
