@@ -37,8 +37,8 @@ public class PinnedMessageMocks extends BaseUnitTest {
     }
 
     protected void setUpUnpinMethod() {
-        when(messagingDatabase.unpinMessage(1)).thenReturn(true);
-        when(messagingDatabase.unpinMessage(2)).thenReturn(false);
+        when(messagingDatabase.unpinMessage(1)).thenReturn(false);
+        when(messagingDatabase.unpinMessage(2)).thenReturn(true);
         when(messagingDatabase.unpinMessage(3)).thenReturn(false);
     }
 

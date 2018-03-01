@@ -234,6 +234,7 @@
 
     <!-- PinnedMessageActivity -->
     <string name="PinnedMessageActivity_own_name">Me</string>
+    <string name="PinnedMessageActivity_unpin_prompt">Are you sure you want to unpin the message?</string>
 
     <!-- CreateProfileActivity -->
     <string name="CreateProfileActivity_your_profile_info">Your profile info</string>
