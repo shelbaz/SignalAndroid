@@ -248,10 +248,7 @@ public class ConversationFragment extends Fragment
   }
 
   private void setCorrectPinVisibility(Menu menu, MessageRecord messageRecord, boolean actionMessage) {
-    PinnedMessagesHandler pinHandler = new PinnedMessagesHandler(getContext());
-    MessagingDatabase databaseToQuery = pinHandler.getAppropriateDatabase(messageRecord);
-
-    if (databaseToQuery.isPinned(messageRecord.getId())) {
+    if (messageRecord.isPinned()) {
       menu.findItem(R.id.menu_context_unpin_message).setVisible(!actionMessage);
       menu.findItem(R.id.menu_context_pin_message).setVisible(false);
     } else {

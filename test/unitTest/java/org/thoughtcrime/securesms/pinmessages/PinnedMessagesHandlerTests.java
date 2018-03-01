@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
+public class PinnedMessagesHandlerTests extends PinnedMessagesMocks {
 
     @Override
     @Before
@@ -47,6 +47,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
         boolean result = handler.handlePinMessage(messageRecordSms, smsDatabase);
 
         verify(smsDatabase).pinMessage(1);
+        verify(smsDatabase).markAsPinned(1);
         assertEquals(result, true);
     }
 
@@ -56,6 +57,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
         boolean result = handler.handlePinMessage(messageRecordMms, mmsDatabase);
 
         verify(mmsDatabase).pinMessage(1);
+        verify(mmsDatabase).markAsPinned(1);
         assertEquals(result, true);
     }
 
@@ -133,6 +135,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
         boolean result = handler.handleUnpinMessage(messageRecordSms, smsDatabase);
 
         verify(smsDatabase).unpinMessage(2);
+        verify(smsDatabase).markAsUnpinned(2);
         assertEquals(result, true);
     }
 
@@ -144,6 +147,7 @@ public class PinnedMesssagesHandlerTests extends PinnedMessagesMocks{
         boolean result = handler.handleUnpinMessage(messageRecordMms, mmsDatabase);
 
         verify(mmsDatabase).unpinMessage(2);
+        verify(mmsDatabase).markAsUnpinned(2);
         assertEquals(result, true);
     }
 }

@@ -55,7 +55,22 @@
                       android:layout_width="210dp"
                       android:layout_height="wrap_content"/>
 
-            <org.thoughtcrime.securesms.components.emoji.EmojiTextView
+            <LinearLayout android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:layout_gravity="start">
+
+                <ImageView android:id="@+id/pinned_indicator"
+                           android:layout_width="12dp"
+                           android:layout_height="12dp"
+                           android:src="@drawable/ic_pin_24dp"
+                           android:tint="?conversation_item_sent_text_secondary_color"
+                           android:contentDescription="@string/conversation_item__pinned_message_description"
+                           android:visibility="gone"
+                           android:alpha=".6"
+                           tools:visibility="visible"/>
+
+                <org.thoughtcrime.securesms.components.emoji.EmojiTextView
                     android:id="@+id/conversation_item_body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -67,6 +82,8 @@
                     android:textSize="@dimen/conversation_item_body_text_size"
                     app:scaleEmojis="true"
                     tools:text="Mango pickle lorem ipsum"/>
+
+            </LinearLayout>
 
             <LinearLayout android:layout_width="wrap_content"
                           android:layout_height="wrap_content"

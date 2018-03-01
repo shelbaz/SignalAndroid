@@ -115,4 +115,30 @@ public class PinnedMessageEspressoTest {
                 .unpinMessage(0)
                 .assertNoText(testString);
     }
+
+    @Test
+    public void pinnedMessagesHaveIndicator() {
+        Helper helper = new Helper(mainActivityRule);
+
+        helper
+            .goConversations()
+            .goConversation()
+                .sendMessage("Hello World!")
+                .pinMessage(1)
+                .assertVisibleIdAt(R.id.pinned_indicator, 1);
+    }
+
+    @Test
+    public void unpinnedMessagesDoesNotHaveIndicator() {
+        Helper helper = new Helper(mainActivityRule);
+
+        helper
+            .goConversations()
+            .goConversation()
+                .sendMessage("Hello World!")
+                .pinMessage(1)
+                .assertVisibleIdAt(R.id.pinned_indicator, 1)
+                .unpinMessage(1)
+                .assertNoVisibleIdAt(R.id.pinned_indicator, 1);
+    }
 }
