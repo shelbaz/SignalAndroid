@@ -38,6 +38,9 @@ public abstract class MessagingDatabase extends Database implements MmsSmsColumn
 
   public abstract void markAsSent(long messageId, boolean secure);
 
+  public abstract void markAsPinned(long messageId);
+  public abstract void markAsUnpinned(long messageId);
+
   public boolean pinMessage(long messageId) {
     Log.w("MessageDatabase", "Pinning: " + messageId);
 
@@ -46,16 +49,6 @@ public abstract class MessagingDatabase extends Database implements MmsSmsColumn
 
     int res = processPinSqlRequest(values, messageId);
     return res > 0 ? true : false;
-  }
-
-  public boolean isPinned(long messageId) {
-    Log.w("MessageDatabase", "Is Pinned?: " + messageId);
-
-    SQLiteDatabase db = databaseHelper.getWritableDatabase();
-    Cursor cursor = db.rawQuery("SELECT * FROM " + this.getTableName() + " WHERE pinned = 1 AND " +
-            ID_WHERE, new String[] {messageId + ""});
-
-    return cursor.getCount() == 1;
   }
 
   public boolean unpinMessage(long messageId) {

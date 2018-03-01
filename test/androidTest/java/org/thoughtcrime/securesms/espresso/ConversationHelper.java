@@ -11,10 +11,11 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static android.support.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class ConversationHelper extends BaseHelper<ConversationHelper> {
+public class ConversationHelper extends BaseRecyclerHelper<ConversationHelper> {
     ConversationHelper(HelperSecret s) {}
 
     private Boolean messageSelected = false;
@@ -45,7 +46,8 @@ public class ConversationHelper extends BaseHelper<ConversationHelper> {
         this.messageSelected = true;
 
         onView(withId(android.R.id.list))
-                .perform(actionOnItemAtPosition(position, longClick()));
+            .perform(scrollToPosition(position))
+            .perform(actionOnItemAtPosition(position, longClick()));
 
         return this;
     }

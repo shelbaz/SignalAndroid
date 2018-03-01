@@ -346,6 +346,20 @@ public class MmsDatabase extends MessagingDatabase {
     notifyConversationListeners(threadId);
   }
 
+  @Override
+  public void markAsPinned(long messageId) {
+    long threadId = getThreadIdForMessage(messageId);
+    updateMailboxBitmask(messageId, 0, Types.PINNED_MESSAGE_BIT, Optional.of(threadId));
+    notifyConversationListeners(threadId);
+  }
+
+  @Override
+  public void markAsUnpinned(long messageId) {
+    long threadId = getThreadIdForMessage(messageId);
+    updateMailboxBitmask(messageId, Types.PINNED_MESSAGE_BIT, 0, Optional.of(threadId));
+    notifyConversationListeners(threadId);
+  }
+
   public void markDownloadState(long messageId, long state) {
     SQLiteDatabase database     = databaseHelper.getWritableDatabase();
     ContentValues contentValues = new ContentValues();

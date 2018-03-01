@@ -26,11 +26,19 @@ public class PinnedMessageHandler {
     }
 
     public boolean handlePinMessage(final MessageRecord message, MessagingDatabase databaseToQuery) {
-        return databaseToQuery.pinMessage(message.getId());
+        boolean result = databaseToQuery.pinMessage(message.getId());
+        if (result) {
+            databaseToQuery.markAsPinned(message.getId());
+        }
+        return result;
     }
 
     public boolean handleUnpinMessage(final MessageRecord message, MessagingDatabase databaseToQuery) {
-        return databaseToQuery.unpinMessage(message.getId());
+        boolean result = databaseToQuery.unpinMessage(message.getId());
+        if (result) {
+            databaseToQuery.markAsUnpinned(message.getId());
+        }
+        return result;
     }
 
 }
