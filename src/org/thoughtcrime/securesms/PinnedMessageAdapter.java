@@ -48,10 +48,9 @@ import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
 public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdapter.ViewHolder> {
     private Context              context;
     private Cursor               dataCursor;
-    private GlideRequests  glideRequests;
+    private GlideRequests        glideRequests;
     private MasterSecret         masterSecret;
     private MmsSmsDatabase       db;
-    private RecyclerView.Adapter adapter;
     private View                 view;
 
     public PinnedMessageAdapter(Activity mContext, Cursor cursor, MasterSecret masterSecret, GlideRequests glideRequests) {
@@ -93,18 +92,20 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
         dataCursor.moveToPosition(position);
         MmsSmsDatabase.Reader reader = db.readerFor(dataCursor, masterSecret);
         MessageRecord         record = reader.getCurrent();
+        this.setMessageView(record, holder);
 
         if (record.isMms()) {
-            ConversationItem                        converationItem        = new ConversationItem(context);
-            ConversationItem.ThumbnailClickListener thumbnailClickListener = converationItem.new ThumbnailClickListener(record);
+            ConversationItem                        conversationItem       = new ConversationItem(context);
+            ConversationItem.ThumbnailClickListener thumbnailClickListener = conversationItem.new ThumbnailClickListener(record);
+
             holder.mediaThumbnailStub.get().setImageResource(masterSecret, glideRequests,
                     ((MmsMessageRecord) record).getSlideDeck().getThumbnailSlide(),
                     true, true);
-            holder.mediaThumbnailStub.get().setVisibility(View.VISIBLE);
             holder.mediaThumbnailStub.get().setThumbnailClickListener(thumbnailClickListener);
+            holder.mediaThumbnailStub.get().setVisibility(View.VISIBLE);
         }
 
-        this.setMessageView(record, holder);
+
         holder.messageContent.setText(record.getDisplayBody().toString());
         holder.time.setText(DateUtils.getExtendedRelativeTimeSpanString(context, new Locale("en", "CA"),
                 record.getTimestamp()));
@@ -116,7 +117,7 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
 
             builder.setPositiveButton(R.string.yes, (dialog, id) -> {
                 PinnedMessageHandler handler = new PinnedMessageHandler(context);
-                handler.handleUnpinMessage(record, DatabaseFactory.getSmsDatabase(context));
+                handler.handleUnpinMessage(record, handler.getAppropriateDatabase(record));
 
                 ((ViewGroup)v.getParent().getParent()).removeAllViews();
                 dialog.cancel();
@@ -136,6 +137,7 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
 
             viewHolder.recipient.setText(R.string.PinnedMessageActivity_own_name);
             return;
+
         } else {
             lp.addRule(ALIGN_PARENT_LEFT);
             viewHolder.wrapper.setLayoutParams(lp);
