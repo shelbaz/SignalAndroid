@@ -61,8 +61,16 @@ public class Helper<T> {
         return new ConversationsHelper(new HelperSecret());
     }
 
-    public NicknameHelper goSettings() {
-        return new NicknameHelper(new HelperSecret());
+    public PreferencesHelper goSettings() {
+        return new PreferencesHelper(new HelperSecret());
+    }
+
+    public PreferencesHelper resetNickname() {
+        return new PreferencesHelper(new HelperSecret());
+    }
+
+    public PreferencesHelper setNickname(String message) {
+        return new PreferencesHelper(new HelperSecret());
     }
 
     /* ASSERTIONS */

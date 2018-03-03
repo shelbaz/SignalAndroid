@@ -13,22 +13,30 @@ import static android.support.test.espresso.contrib.RecyclerViewActions.actionOn
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class NicknameHelper extends Helper<NicknameHelper>{
-    public NicknameHelper(HelperSecret s) {}
+public class PreferencesHelper extends Helper<PreferencesHelper>{
+    public PreferencesHelper(HelperSecret s) {}
 
-    public NicknameHelper resetNickname()
+    public PreferencesHelper resetNickname()
     {
         onView(withText("Reset Nickname"))
                 .perform(click());
 
-        return new NicknameHelper(new HelperSecret());
+        return new PreferencesHelper(new HelperSecret());
     }
 
-    public NicknameHelper setNickname(String s)
+    public PreferencesHelper setNickname(String message)
     {
         onView(withText("Set Nickname"))
                 .perform(click());
 
-        return new NicknameHelper(new HelperSecret());
+        onView(withId(R.id.action_bar_root))
+                .perform(typeText(message));
+
+        onView(withText("OK"))
+                .perform(click());
+
+        return new PreferencesHelper(new HelperSecret());
     }
+
+
 }

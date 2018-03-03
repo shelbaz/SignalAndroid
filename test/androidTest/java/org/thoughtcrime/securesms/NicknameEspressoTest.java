@@ -9,6 +9,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.thoughtcrime.securesms.espresso.Helper;
 
+import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -34,7 +39,15 @@ public class NicknameEspressoTest {
     public void settingNickname()
     {
         Helper helper = new Helper(mainActivityRule);
-        pageExists();
+        Helper otherHelper = new Helper(otherActivityRule);
+
+        helper
+                .setNickname("Testing");
+        otherHelper
+                .goConversations()
+                .goConversation();
+
+        onView(withId(R.id.action_bar_container));
 
 
     }
@@ -42,7 +55,9 @@ public class NicknameEspressoTest {
     public void resettingNickname()
     {
         Helper helper = new Helper(mainActivityRule);
-        pageExists();
+
+        helper
+                .resetNickname();
 
     }
 

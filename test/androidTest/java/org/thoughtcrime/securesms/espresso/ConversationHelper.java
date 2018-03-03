@@ -91,11 +91,11 @@ public class ConversationHelper extends Helper<ConversationHelper> {
         return new PinnedHelper(new HelperSecret());
     }
 
-    public NicknameHelper goSettings()
+    public PreferencesHelper goSettings()
     {
         onView(withId(R.id.contact_photo_image))
                 .perform(click());
 
-        return new NicknameHelper(new HelperSecret());
+        return new PreferencesHelper(new HelperSecret());
     }
 }
