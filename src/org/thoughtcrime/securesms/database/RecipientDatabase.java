@@ -241,11 +241,16 @@ public class RecipientDatabase extends Database {
     recipient.resolve().setBlocked(blocked);
   }
 
-  public void setNickname(@Nullable Recipient recipient, String nickname) {
+  public boolean setNickname(@Nullable Recipient recipient, String nickname) {
     ContentValues values = new ContentValues();
     values.put(NICKNAME, nickname);
-    updateOrInsert(recipient.getAddress(), values);
-    recipient.resolve().setNickname(nickname);
+    int res = processNicknameSqlRequest(values, recipient.getAddress());
+    if (res > 0)
+    {
+      recipient.resolve().setNickname(nickname);
+      return true;
+    }
+    else {return false;}
   }
 
   public void setRingtone(@NonNull Recipient recipient, @Nullable Uri notification) {
