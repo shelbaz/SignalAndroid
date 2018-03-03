@@ -22,7 +22,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 abstract class BaseHelper<T> {
-    static String phoneNumber = null;
+    // TODO temporary solution until pinned images sent to self finish loading (bug)
+    static String phoneNumber = "+15148136314";
 
     BaseHelper() {}
 

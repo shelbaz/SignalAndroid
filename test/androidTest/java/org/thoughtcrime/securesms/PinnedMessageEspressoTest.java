@@ -72,7 +72,7 @@ public class PinnedMessageEspressoTest {
             .goConversations()
             .goConversation()
                 .sendMessage(testString)
-                .pinMessage(1)
+                .pinMessage(0)
             .goPinned()
                 .assertText(testString);
     }
@@ -157,21 +157,21 @@ public class PinnedMessageEspressoTest {
             .goConversations()
             .goConversation()
                 .sendMessage("Hello World!")
-                .pinMessage(1)
-                .assertVisibleIdAt(R.id.pinned_indicator, 1);
+                .pinMessage(0)
+                .assertVisibleIdAt(R.id.pinned_indicator, 0);
     }
 
     @Test
-    public void unpinnedMessagesDoesNotHaveIndicator() {
+    public void unpinnedMessagesDoNotHaveIndicator() {
         Helper helper = new Helper(mainActivityRule);
 
         helper
             .goConversations()
             .goConversation()
                 .sendMessage("Hello World!")
-                .pinMessage(1)
-                .assertVisibleIdAt(R.id.pinned_indicator, 1)
-                .unpinMessage(1)
-                .assertNoVisibleIdAt(R.id.pinned_indicator, 1);
+                .pinMessage(0)
+                .assertVisibleIdAt(R.id.pinned_indicator, 0)
+                .unpinMessage(0)
+                .assertNoVisibleIdAt(R.id.pinned_indicator, 0);
     }
 }
