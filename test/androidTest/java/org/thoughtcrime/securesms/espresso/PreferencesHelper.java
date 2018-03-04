@@ -10,7 +10,7 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class PreferencesHelper extends Helper<PreferencesHelper>{
+public class PreferencesHelper extends BaseHelper<PreferencesHelper>{
     public PreferencesHelper(HelperSecret s) {}
 
     public PreferencesHelper resetNickname() {
