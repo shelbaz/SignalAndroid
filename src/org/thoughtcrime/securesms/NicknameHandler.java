@@ -49,9 +49,9 @@ public class NicknameHandler {
 
     public boolean removeNickname(Recipient recipient) {
         this.setupDatabaseHandler();
-        try{return this.recipientDatabase.setNickname(recipient, null);}
-        catch (Exception e) { System.err.println("Did not remove nickname"); return false;}
-    }
+        this.recipientDatabase.setNickname(recipient, null);
+        return true;}
+
 
     /**
      * The method helps the developer to set the proper database
