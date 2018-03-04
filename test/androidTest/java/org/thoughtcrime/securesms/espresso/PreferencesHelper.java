@@ -14,14 +14,14 @@ public class PreferencesHelper extends BaseHelper<PreferencesHelper>{
     public PreferencesHelper(HelperSecret s) {}
 
     public PreferencesHelper resetNickname() {
-        onView(withText("Reset Nickname"))
+        onView(withText(R.string.RecipientPreferenceActivity_resetnickname))
                 .perform(click());
 
         return new PreferencesHelper(new HelperSecret());
     }
 
     public PreferencesHelper setNickname(String message) {
-        onView(withText("Set Nickname"))
+        onView(withText(R.string.RecipientPreferenceActivity_setnickname))
                 .perform(click());
         onView(withId(android.R.id.edit))
                 .perform(replaceText(message));
