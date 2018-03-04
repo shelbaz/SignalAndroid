@@ -19,15 +19,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class NicknameEspressoTest {
     @Rule
-    public ActivityTestRule<RecipientPreferenceActivity> mainActivityRule =
-            new ActivityTestRule(RecipientPreferenceActivity.class, true, false);
-
-    public ActivityTestRule<ConversationListActivity> otherActivityRule =
+    public ActivityTestRule<ConversationListActivity> mainActivityRule =
             new ActivityTestRule(ConversationListActivity.class, true, false);
 
     @Test
     public void pageExists(){
-        Helper otherHelper = new Helper(otherActivityRule);
+        Helper otherHelper = new Helper(mainActivityRule);
 
         otherHelper
                 .goConversations()
@@ -36,14 +33,17 @@ public class NicknameEspressoTest {
 
     }
 
+    @Test
     public void settingNickname()
     {
         Helper helper = new Helper(mainActivityRule);
-        Helper otherHelper = new Helper(otherActivityRule);
 
         helper
+                .goConversations()
+                .goConversation()
+                .goSettings()
                 .setNickname("Testing");
-        otherHelper
+        helper
                 .goConversations()
                 .goConversation();
 
@@ -51,12 +51,15 @@ public class NicknameEspressoTest {
 
 
     }
-
+    @Test
     public void resettingNickname()
     {
         Helper helper = new Helper(mainActivityRule);
-
         helper
+                .goConversations()
+                .goConversation()
+                .goSettings()
+                .setNickname("Testing")
                 .resetNickname();
 
     }
