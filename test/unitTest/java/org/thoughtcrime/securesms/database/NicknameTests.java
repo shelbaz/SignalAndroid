@@ -22,7 +22,7 @@ public class NicknameTests extends NicknameMocks {
     @Test
     public void testSetNicknameDatabase() {
         assertEquals(recipientDatabase.setNickname(super.recipient, "test"), true);
-        assertEquals(recipientDatabase.setNickname(super.recipient, "test"), false);
+        assertEquals(recipientDatabase.setNickname(super.recipient, "test"), true);
 
         verify(recipientDatabase, times(2)).setNickname(super.recipient, "test");
     }
@@ -30,12 +30,18 @@ public class NicknameTests extends NicknameMocks {
     @Test
     public void testSetNicknameDatabaseExtended() {
         assertEquals(recipientDatabase.setNickname(super.recipient, "test"), true);
-        assertEquals(recipientDatabase.setNickname(super.recipient, "test"), false);
+        assertEquals(recipientDatabase.setNickname(super.recipient, "test"), true);
         assertEquals(recipientDatabase.setNickname(super.recipient, "new test"), true);
-        assertEquals(recipientDatabase.setNickname(super.recipient, "new test"), false);
+        assertEquals(recipientDatabase.setNickname(super.recipient, "new test"), true);
 
         verify(recipientDatabase, times(2)).setNickname(super.recipient, "test");
         verify(recipientDatabase, times(2)).setNickname(super.recipient, "new test");
+    }
+
+    @Test
+    public void testRemoveNickName() {
+        assertEquals(recipientDatabase.setNickname(super.recipient, null), true);
+        verify(recipientDatabase, times(1)).setNickname(super.recipient, null);
     }
 }
 

@@ -119,7 +119,7 @@ public class RecipientDatabase extends Database {
           SIGNAL_PROFILE_NAME + " TEXT DEFAULT NULL, " +
           SIGNAL_PROFILE_AVATAR + " TEXT DEFAULT NULL, " +
           PROFILE_SHARING + " INTEGER DEFAULT 0, " +
-          NICKNAME + " TEXT DEFAULT 'null');";
+          NICKNAME + " TEXT DEFAULT NULL);";
 
   public RecipientDatabase(Context context, SQLiteOpenHelper databaseHelper) {
     super(context, databaseHelper);
@@ -135,7 +135,6 @@ public class RecipientDatabase extends Database {
   public BlockedReader readerForBlocked(Cursor cursor) {
     return new BlockedReader(context, cursor);
   }
-
 
   public Optional<RecipientSettings> getRecipientSettings(@NonNull Address address) {
     SQLiteDatabase database = databaseHelper.getReadableDatabase();
@@ -331,9 +330,9 @@ public class RecipientDatabase extends Database {
 
   private int processNicknameSqlRequest(ContentValues values, Address address) {
     SQLiteDatabase db = databaseHelper.getWritableDatabase();
-    int updated = db.update(TABLE_NAME, values, ADDRESS + " = ? ",
+    int updated = db.update(TABLE_NAME, values, ADDRESS + " = ? " ,
                         new String[] {address.serialize()});
-       return updated;
+    return updated;
   }
 
   public void setRegistered(@NonNull Recipient recipient, RegisteredState registeredState) {
