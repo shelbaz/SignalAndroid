@@ -614,7 +614,7 @@ public class ConversationItem extends LinearLayout
     }
 
     public void onClick(final View v, final Slide slide) {
-      if (shouldInterceptClicks(messageRecord) || !batchSelected.isEmpty() && !pin) {
+      if (shouldInterceptClicks(messageRecord) || !batchSelected.isEmpty() && !this.pin) {
         performClick();
       } else if (MediaPreviewActivity.isContentTypeSupported(slide.getContentType()) && slide.getUri() != null) {
         Intent intent = new Intent(context, MediaPreviewActivity.class);

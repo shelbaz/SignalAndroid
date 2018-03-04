@@ -17,16 +17,13 @@
 package org.thoughtcrime.securesms;
 
 import android.app.Activity;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -105,7 +102,6 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
             holder.mediaThumbnailStub.get().setVisibility(View.VISIBLE);
         }
 
-
         holder.messageContent.setText(record.getDisplayBody().toString());
         holder.time.setText(DateUtils.getExtendedRelativeTimeSpanString(context, new Locale("en", "CA"),
                 record.getTimestamp()));
@@ -137,7 +133,6 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
 
             viewHolder.recipient.setText(R.string.PinnedMessageActivity_own_name);
             return;
-
         } else {
             lp.addRule(ALIGN_PARENT_LEFT);
             viewHolder.wrapper.setLayoutParams(lp);

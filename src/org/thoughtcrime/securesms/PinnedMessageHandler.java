@@ -40,5 +40,4 @@ public class PinnedMessageHandler {
         }
         return result;
     }
-
 }
