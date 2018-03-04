@@ -145,6 +145,7 @@ public class Recipient implements RecipientModifiedListener {
 
     if (details.isPresent()) {
       this.name                  = details.get().name;
+      this.nickname              = details.get().nickname;
       this.systemContactPhoto    = details.get().systemContactPhoto;
       this.groupAvatarId         = details.get().groupAvatarId;
       this.color                 = details.get().color;
@@ -171,6 +172,7 @@ public class Recipient implements RecipientModifiedListener {
         if (result != null) {
           synchronized (Recipient.this) {
             Recipient.this.name                  = result.name;
+            Recipient.this.nickname              = result.nickname;
             Recipient.this.contactUri            = result.contactUri;
             Recipient.this.systemContactPhoto    = result.systemContactPhoto;
             Recipient.this.groupAvatarId         = result.groupAvatarId;
@@ -217,6 +219,7 @@ public class Recipient implements RecipientModifiedListener {
     this.address               = address;
     this.contactUri            = details.contactUri;
     this.name                  = details.name;
+    this.nickname              = details.nickname;
     this.systemContactPhoto    = details.systemContactPhoto;
     this.groupAvatarId         = details.groupAvatarId;
     this.color                 = details.color;

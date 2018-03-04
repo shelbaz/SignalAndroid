@@ -248,7 +248,7 @@ public class RecipientDatabase extends Database {
       recipient.resolve().setNickname(nickname);
       return true;
     }
-    return false;
+      return false;
   }
 
   public void setRingtone(@NonNull Recipient recipient, @Nullable Uri notification) {
@@ -519,6 +519,10 @@ public class RecipientDatabase extends Database {
 
     public long getMuteUntil() {
       return muteUntil;
+    }
+
+    public String getNickname() {
+      return nickname;
     }
 
     public @NonNull VibrateState getVibrateState() {
