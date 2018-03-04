@@ -9,9 +9,8 @@ import static android.support.test.espresso.contrib.RecyclerViewActions.actionOn
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.thoughtcrime.securesms.espresso.ViewActions.longClickChildViewWithId;
 
-public class PinnedHelper extends Helper<PinnedHelper> {
-    public PinnedHelper(HelperSecret s) {
-    }
+public class PinnedHelper extends BaseHelper<PinnedHelper> {
+    public PinnedHelper(HelperSecret s) {}
 
     public PinnedHelper unpinMessage(int position) {
         onView(withId(android.R.id.list))

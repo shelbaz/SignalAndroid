@@ -323,8 +323,8 @@ public class ConversationFragment extends Fragment
   }
 
   public void handlePinOrUnpinMessage(final MessageRecord message, boolean pin,
-                                      PinnedMessagesHandler handler) {
-    PinnedMessagesHandler pinHandler;
+                                      PinnedMessageHandler handler) {
+    PinnedMessageHandler  pinHandler;
     MessagingDatabase     databaseToQuery;
     String                outputMessage;
     boolean               result;
@@ -332,8 +332,15 @@ public class ConversationFragment extends Fragment
     pinHandler       = handler;
     databaseToQuery  = pinHandler.getAppropriateDatabase(message);
 
-    if(!message.isMms()) {
-      if (pin) {
+    if (pin) {
+      // Blocking Video and Audio pinning Temporarily
+        if(message.isMms()) {
+          MediaMmsMessageRecord mediaMessage = (MediaMmsMessageRecord) message;
+          if (!mediaMessage.getSlideDeck().getThumbnailSlide().getContentType().contains("image")) {
+            showToast("You can only pin image type mms!");
+            return;
+          }
+        }
         result = pinHandler.handlePinMessage(message, databaseToQuery);
 
         if (result) {
@@ -351,13 +358,9 @@ public class ConversationFragment extends Fragment
           outputMessage = getString(R.string.ConversationFragment_unpin_already_unpinned);
         }
       }
-    } else {
-      outputMessage = getString(R.string.ConversationFragment_pin_mms_error_message);
-    }
 
-    showToast(outputMessage);
+    this.showToast(outputMessage);
   }
-
 
   private void handleDeleteMessages(final Set<MessageRecord> messageRecords) {
     int                 messagesCount = messageRecords.size();
@@ -719,12 +722,12 @@ public class ConversationFragment extends Fragment
           return true;
         case R.id.menu_context_pin_message:
           handlePinOrUnpinMessage(getSelectedMessageRecord(), true,
-                  new PinnedMessagesHandler(getContext()));
+                  new PinnedMessageHandler(getContext()));
           actionMode.finish();
           return true;
         case R.id.menu_context_unpin_message:
           handlePinOrUnpinMessage(getSelectedMessageRecord(), false,
-                  new PinnedMessagesHandler(getContext()));
+                  new PinnedMessageHandler(getContext()));
           actionMode.finish();
           return true;
       }

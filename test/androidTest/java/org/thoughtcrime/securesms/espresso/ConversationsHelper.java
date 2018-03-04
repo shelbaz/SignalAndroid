@@ -7,7 +7,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
-public class ConversationsHelper extends Helper<ConversationsHelper> {
+public class ConversationsHelper extends BaseHelper<ConversationsHelper> {
     public ConversationsHelper(HelperSecret s) {}
 
     /* NAVIGATION */

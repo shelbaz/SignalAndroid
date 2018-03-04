@@ -3,14 +3,14 @@ package org.thoughtcrime.securesms.database;
 import org.junit.runners.JUnit4;
 import org.junit.runner.RunWith;
 import org.junit.Test;
-import org.thoughtcrime.securesms.PinnedMessagesMocks;
+import org.thoughtcrime.securesms.PinnedMessageMocks;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
-public class PinnedMessagesTest extends PinnedMessagesMocks {
+public class PinnedMessageTest extends PinnedMessageMocks {
 
     @Override
     public void setUp() {

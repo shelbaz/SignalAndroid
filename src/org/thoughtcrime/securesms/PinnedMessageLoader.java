@@ -9,11 +9,11 @@ import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.MmsSmsDatabase;
 import org.thoughtcrime.securesms.util.AbstractCursorLoader;
 
-public class PinMessagesLoader extends AbstractCursorLoader {
+public class PinnedMessageLoader extends AbstractCursorLoader {
     private final long      threadID;
     private       long      limit;
 
-    public PinMessagesLoader(Context context, long threadID, @Nullable long limit) {
+    public PinnedMessageLoader(Context context, long threadID, @Nullable long limit) {
         super(context);
         this.threadID = threadID;
         this.limit    = limit;

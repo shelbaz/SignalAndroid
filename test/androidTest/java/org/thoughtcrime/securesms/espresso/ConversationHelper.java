@@ -29,6 +29,19 @@ public class ConversationHelper extends BaseRecyclerHelper<ConversationHelper> {
         return this;
     }
 
+    public ConversationHelper sendImage(String message) {
+        onView(withId(R.id.quick_camera_toggle))
+                .perform(click());
+        onView(withId(R.id.shutter_button))
+                .perform(click());
+        onView(withId(R.id.embedded_text_editor))
+                .perform(typeText(message));
+        onView(withId(R.id.send_button))
+                .perform(click());
+
+        return this;
+    }
+
     public ConversationHelper selectMessage(int position) {
         this.messageSelected = true;
 

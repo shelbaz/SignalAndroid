@@ -26,7 +26,6 @@ public class PinnedMessageEspressoTest {
             .goPinned();
     }
 
-
     @Test
     public void pageDisplaysOwnNumber() {
         Helper helper = new Helper(mainActivityRule);
@@ -73,11 +72,10 @@ public class PinnedMessageEspressoTest {
             .goConversations()
             .goConversation()
                 .sendMessage(testString)
-                .pinMessage(1)
+                .pinMessage(0)
             .goPinned()
                 .assertText(testString);
     }
-
 
     @Test
     public void unpinnedMessagesAreNotShown() {
@@ -98,7 +96,6 @@ public class PinnedMessageEspressoTest {
                 .assertNoText(testString);
     }
 
-
     @Test
     public void canUnpinMessagesFromList() {
         Helper helper = new Helper(mainActivityRule);
@@ -117,6 +114,42 @@ public class PinnedMessageEspressoTest {
     }
 
     @Test
+    public void canPinImageMms() {
+        Helper helper = new Helper(mainActivityRule);
+
+        String testString = helper.randString();
+
+        helper
+            .goConversations()
+            .goConversation()
+                .sendImage(testString)
+                .pinMessage(0)
+            .goPinned()
+                .assertText(testString)
+                .assertId(R.id.thumbnail_image);
+    }
+
+    @Test
+    public void canUnpinImageMms() {
+        Helper helper = new Helper(mainActivityRule);
+
+        String testString = helper.randString();
+
+        helper
+            .goConversations()
+            .goConversation()
+                .sendImage(testString)
+                .pinMessage(0)
+                .unpinMessage(0)
+            .goPinned()
+            .goConversation()
+                .pinMessage(0)
+            .goPinned()
+                .unpinMessage(0)
+                .assertNoText(testString);
+    }
+
+    @Test
     public void pinnedMessagesHaveIndicator() {
         Helper helper = new Helper(mainActivityRule);
 
@@ -124,21 +157,21 @@ public class PinnedMessageEspressoTest {
             .goConversations()
             .goConversation()
                 .sendMessage("Hello World!")
-                .pinMessage(1)
-                .assertVisibleIdAt(R.id.pinned_indicator, 1);
+                .pinMessage(0)
+                .assertVisibleIdAt(R.id.pinned_indicator, 0);
     }
 
     @Test
-    public void unpinnedMessagesDoesNotHaveIndicator() {
+    public void unpinnedMessagesDoNotHaveIndicator() {
         Helper helper = new Helper(mainActivityRule);
 
         helper
             .goConversations()
             .goConversation()
                 .sendMessage("Hello World!")
-                .pinMessage(1)
-                .assertVisibleIdAt(R.id.pinned_indicator, 1)
-                .unpinMessage(1)
-                .assertNoVisibleIdAt(R.id.pinned_indicator, 1);
+                .pinMessage(0)
+                .assertVisibleIdAt(R.id.pinned_indicator, 0)
+                .unpinMessage(0)
+                .assertNoVisibleIdAt(R.id.pinned_indicator, 0);
     }
 }

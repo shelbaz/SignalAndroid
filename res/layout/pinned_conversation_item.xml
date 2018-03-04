@@ -58,6 +58,12 @@
                     android:textColorLink="@color/black"
                     android:textSize="16sp" />
 
+                <ViewStub
+                    android:id="@+id/pinned_image_view_stub"
+                    android:layout_width="@dimen/media_bubble_height"
+                    android:layout_height="@dimen/media_bubble_height"
+                    android:layout="@layout/pinned_conversation_item_sent_thumbnail" />
+
                 <TextView
                     android:id="@+id/conversation_item_date"
                     android:layout_width="match_parent"
