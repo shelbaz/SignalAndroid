@@ -14,8 +14,4 @@ public class Helper extends BaseHelper<Helper> {
     public ConversationsHelper goConversations() {
         return new ConversationsHelper(new HelperSecret());
     }
-
-    /* ASSERTIONS */
-
-
 }
