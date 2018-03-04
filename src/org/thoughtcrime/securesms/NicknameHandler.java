@@ -44,6 +44,12 @@ public class NicknameHandler {
         this.setupDatabaseHandler();
         return this.recipientDatabase.setNickname(recipient, nickname);
     }
+  
+    public boolean removeNickname(Recipient recipient) {
+        this.setupDatabaseHandler();
+        this.recipientDatabase.setNickname(recipient, null);
+        return true;
+    }
 
     /**
      * The method helps the developer to set the proper database

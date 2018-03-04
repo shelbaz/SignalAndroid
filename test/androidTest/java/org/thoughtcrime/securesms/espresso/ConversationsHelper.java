@@ -14,11 +14,11 @@ public class ConversationsHelper extends BaseHelper<ConversationsHelper> {
 
     public ConversationHelper goConversation() {
         onView(withId(R.id.fab))
-                .perform(click());
+            .perform(click());
         onView(withId(R.id.search_view))
-                .perform(typeText(phoneNumber));
+            .perform(typeText(phoneNumber));
         onView(withId(R.id.name))
-                .perform(click());
+            .perform(click());
 
         return new ConversationHelper(new HelperSecret());
     }

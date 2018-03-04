@@ -243,7 +243,12 @@ public class RecipientDatabase extends Database {
   public boolean setNickname(@Nullable Recipient recipient, String nickname) {
     ContentValues values = new ContentValues();
     values.put(NICKNAME, nickname);
-    return processNicknameSqlRequest(values, recipient.getAddress()) > 0;
+    int res = processNicknameSqlRequest(values, recipient.getAddress());
+    if (res > 0) {
+      recipient.resolve().setNickname(nickname);
+      return true;
+    }
+    return false;
   }
 
   public void setRingtone(@NonNull Recipient recipient, @Nullable Uri notification) {
@@ -326,15 +331,9 @@ public class RecipientDatabase extends Database {
 
   private int processNicknameSqlRequest(ContentValues values, Address address) {
     SQLiteDatabase db = databaseHelper.getWritableDatabase();
-    return db.update(
-      this.TABLE_NAME,
-      values,
-          ADDRESS + " = ? AND " +
-          NICKNAME + " NOT Like ? ",
-      new String[] {
-          address.serialize(),
-          values.getAsString(NICKNAME)
-      });
+    int updated = db.update(TABLE_NAME, values, ADDRESS + " = ? ",
+                        new String[] {address.serialize()});
+       return updated;
   }
 
   public void setRegistered(@NonNull Recipient recipient, RegisteredState registeredState) {

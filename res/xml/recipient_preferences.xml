@@ -33,6 +33,16 @@
                 android:positiveButtonText="@null"
                 android:persistent="false"
                 app:numColumns="5" />
+        <EditTextPreference
+            android:defaultValue="@string/RecipientPreferenceActivity_username"
+            android:key="pref_key_change_nickname"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/RecipientPreferenceActivity_setnickname"/>
+        <Preference
+            android:key="pref_key_reset_nickname"
+            android:persistent="false"
+            android:title="@string/RecipientPreferenceActivity_resetnickname" />
     </PreferenceCategory>
 
     <PreferenceCategory android:key="divider" android:layout="@layout/preference_divider"/>
@@ -44,9 +54,10 @@
                     android:persistent="false"
                     android:enabled="false"/>
 
-        <Preference android:key="pref_key_recipient_block"
-                    android:title="@string/recipient_preferences__block"
-                    android:persistent="false"/>
+        <Preference
+            android:key="pref_key_recipient_block"
+            android:persistent="false"
+            android:title="@string/recipient_preferences__block" />
 
     </PreferenceCategory>
 

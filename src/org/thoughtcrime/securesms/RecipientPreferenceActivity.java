@@ -24,6 +24,7 @@ import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
+import android.support.v7.preference.EditTextPreference;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -74,12 +76,14 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
   public static final String ADDRESS_EXTRA                = "recipient_address";
   public static final String CAN_HAVE_SAFETY_NUMBER_EXTRA = "can_have_safety_number";
 
-  private static final String PREFERENCE_MUTED    = "pref_key_recipient_mute";
-  private static final String PREFERENCE_TONE     = "pref_key_recipient_ringtone";
-  private static final String PREFERENCE_VIBRATE  = "pref_key_recipient_vibrate";
-  private static final String PREFERENCE_BLOCK    = "pref_key_recipient_block";
-  private static final String PREFERENCE_COLOR    = "pref_key_recipient_color";
-  private static final String PREFERENCE_IDENTITY = "pref_key_recipient_identity";
+  private static final String PREFERENCE_MUTED          = "pref_key_recipient_mute";
+  private static final String PREFERENCE_TONE           = "pref_key_recipient_ringtone";
+  private static final String PREFERENCE_VIBRATE        = "pref_key_recipient_vibrate";
+  private static final String PREFERENCE_BLOCK          = "pref_key_recipient_block";
+  private static final String PREFERENCE_COLOR          = "pref_key_recipient_color";
+  private static final String PREFERENCE_IDENTITY       = "pref_key_recipient_identity";
+  private static final String PREFERENCE_NICKNAME       = "pref_key_change_nickname";
+  private static final String PREFERENCE_RESET_NICKNAME = "pref_key_reset_nickname";
 
   private final DynamicTheme    dynamicTheme    = new DynamicNoActionBarTheme();
   private final DynamicLanguage dynamicLanguage = new DynamicLanguage();
@@ -91,6 +95,7 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
   private TextView                threadPhotoRailLabel;
   private ThreadPhotoRailView     threadPhotoRailView;
   private CollapsingToolbarLayout toolbarLayout;
+  private NicknameHandler         nicknameHandler;
 
   @Override
   public void onPreCreate() {
@@ -257,6 +262,10 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
           .setOnPreferenceClickListener(new BlockClickedListener());
       this.findPreference(PREFERENCE_COLOR)
           .setOnPreferenceChangeListener(new ColorChangeListener());
+      this.findPreference(PREFERENCE_NICKNAME)
+          .setOnPreferenceChangeListener(new NicknameChangeListener());
+      this.findPreference(PREFERENCE_RESET_NICKNAME)
+          .setOnPreferenceClickListener(new NicknameResetClickedListener());
     }
 
     @Override
@@ -300,6 +309,9 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
       Preference                 identityPreference = this.findPreference(PREFERENCE_IDENTITY);
       PreferenceCategory         privacyCategory    = (PreferenceCategory)this.findPreference("privacy_settings");
       PreferenceCategory         divider            = (PreferenceCategory)this.findPreference("divider");
+      EditTextPreference         nickname           = (EditTextPreference)this.findPreference(PREFERENCE_NICKNAME);
+
+      nickname.setText(recipient.getName());
 
       mutePreference.setChecked(recipient.isMuted());
 
@@ -493,6 +505,37 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
             return null;
           }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+      }
+    }
+
+    private class NicknameChangeListener implements Preference.OnPreferenceChangeListener {
+
+      @Override
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        NicknameHandler nicknameHandler = new NicknameHandler(getContext());
+        nicknameHandler.setNickname(recipient, newValue.toString());
+        showToast(getString(R.string.RecipientPreferenceActivity_nickname_set_successfully));
+        return true;
+      }
+
+      public void showToast(String outputMessage) {
+        Toast toast=Toast.makeText(getContext(), outputMessage, Toast.LENGTH_SHORT);
+        toast.show();
+      }
+    }
+
+    private class NicknameResetClickedListener implements Preference.OnPreferenceClickListener {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+          NicknameHandler nicknameHandler = new NicknameHandler(getContext());
+          nicknameHandler.removeNickname(recipient);
+          showToast(getString(R.string.RecipientPreferenceActivity_nickname_reset_successfully));
+          return true;
+      }
+
+      public void showToast(String outputMessage) {
+        Toast toast=Toast.makeText(getContext(), outputMessage, Toast.LENGTH_SHORT);
+        toast.show();
       }
     }
 

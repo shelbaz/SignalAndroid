@@ -22,22 +22,22 @@ public class ConversationHelper extends BaseRecyclerHelper<ConversationHelper> {
 
     public ConversationHelper sendMessage(String message) {
         onView(withId(R.id.embedded_text_editor))
-                .perform(typeText(message));
+            .perform(typeText(message));
         onView(withId(R.id.send_button))
-                .perform(click());
+            .perform(click());
 
         return this;
     }
 
     public ConversationHelper sendImage(String message) {
         onView(withId(R.id.quick_camera_toggle))
-                .perform(click());
+            .perform(click());
         onView(withId(R.id.shutter_button))
-                .perform(click());
+            .perform(click());
         onView(withId(R.id.embedded_text_editor))
-                .perform(typeText(message));
+            .perform(typeText(message));
         onView(withId(R.id.send_button))
-                .perform(click());
+            .perform(click());
 
         return this;
     }
@@ -69,7 +69,7 @@ public class ConversationHelper extends BaseRecyclerHelper<ConversationHelper> {
         this.selectMessage(position);
 
         onView(withId(R.id.menu_context_pin_message))
-                .perform(click());
+            .perform(click());
 
         return this;
     }
@@ -80,7 +80,7 @@ public class ConversationHelper extends BaseRecyclerHelper<ConversationHelper> {
         this.selectMessage(position);
 
         onView(withId(R.id.menu_context_unpin_message))
-                .perform(click());
+            .perform(click());
 
         return this;
     }
@@ -101,8 +101,15 @@ public class ConversationHelper extends BaseRecyclerHelper<ConversationHelper> {
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
 
         onView(withText(R.string.conversation__menu_view_pinned_messages))
-                .perform(click());
+            .perform(click());
 
         return new PinnedHelper(new HelperSecret());
+    }
+
+    public PreferencesHelper goSettings() {
+        onView(withId(R.id.contact_photo_image))
+            .perform(click());
+
+        return new PreferencesHelper(new HelperSecret());
     }
 }
