@@ -43,16 +43,14 @@ public class NicknameHandler {
      */
     public boolean setNickname(Recipient recipient, String nickname) {
         this.setupDatabaseHandler();
-        try{this.recipientDatabase.setNickname(recipient, nickname);}
+        try{ return this.recipientDatabase.setNickname(recipient, nickname);}
         catch (Exception e) { System.err.println("Did not add nickname"); return false;}
-        return true;
     }
 
     public boolean removeNickname(Recipient recipient) {
         this.setupDatabaseHandler();
-        try{this.recipientDatabase.setNickname(recipient, null);}
+        try{return this.recipientDatabase.setNickname(recipient, null);}
         catch (Exception e) { System.err.println("Did not remove nickname"); return false;}
-        return true;
     }
 
     /**

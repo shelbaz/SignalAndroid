@@ -245,8 +245,7 @@ public class RecipientDatabase extends Database {
     ContentValues values = new ContentValues();
     values.put(NICKNAME, nickname);
     int res = processNicknameSqlRequest(values, recipient.getAddress());
-    if (res > 0)
-    {
+    if (res > 0) {
       recipient.resolve().setNickname(nickname);
       return true;
     }
@@ -333,9 +332,10 @@ public class RecipientDatabase extends Database {
 
   private int processNicknameSqlRequest(ContentValues values, Address address) {
     SQLiteDatabase db = databaseHelper.getWritableDatabase();
-    return db.update(this.TABLE_NAME, values, ADDRESS + " = ? AND " +
-                    NICKNAME + " NOT Like ? ",
-            new String[] {address.serialize(),values.getAsString(NICKNAME)});
+
+    int updated = db.update(TABLE_NAME, values, ADDRESS + " = ? ",
+            new String[] {address.serialize()});
+    return updated;
   }
 
   public void setRegistered(@NonNull Recipient recipient, RegisteredState registeredState) {
