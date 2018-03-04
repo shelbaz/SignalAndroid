@@ -42,14 +42,7 @@ public class NicknameHandler {
      */
     public boolean setNickname(Recipient recipient, String nickname) {
         this.setupDatabaseHandler();
-        try{
-            return this.recipientDatabase.setNickname(recipient, nickname);
-        }
-        catch (Exception e)
-        {
-            System.err.println("Did not add nickname");
-            return false;
-        }
+        return this.recipientDatabase.setNickname(recipient, nickname);
     }
   
     public boolean removeNickname(Recipient recipient) {
