@@ -91,8 +91,7 @@ public class ConversationHelper extends Helper<ConversationHelper> {
         return new PinnedHelper(new HelperSecret());
     }
 
-    public PreferencesHelper goSettings()
-    {
+    public PreferencesHelper goSettings() {
         onView(withId(R.id.contact_photo_image))
                 .perform(click());
 

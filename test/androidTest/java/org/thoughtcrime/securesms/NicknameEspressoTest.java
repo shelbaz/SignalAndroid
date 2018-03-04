@@ -9,12 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.thoughtcrime.securesms.espresso.Helper;
 
-import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-
-
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class NicknameEspressoTest {
@@ -27,44 +21,39 @@ public class NicknameEspressoTest {
         Helper otherHelper = new Helper(mainActivityRule);
 
         otherHelper
-                .goConversations()
-                .goConversation()
-                .goSettings();
-
+            .goConversations()
+            .goConversation()
+            .goSettings();
     }
 
     @Test
-    public void settingNickname()
-    {
+    public void canSetNickName() {
         Helper helper = new Helper(mainActivityRule);
 
+        String testString = helper.randString();
+
         helper
-                .goConversations()
-                .goConversation()
-                .goSettings()
-                .setNickname("Testing");
-        helper
-                .goConversations()
-                .goConversation();
-
-        onView(withId(R.id.action_bar_container));
-
-
+            .goConversations()
+            .goConversation()
+            .goSettings()
+                .setNickname(testString)
+            .goConversation()
+                .assertText(testString);
     }
+
     @Test
-    public void resettingNickname()
-    {
+    public void resettingNickname() {
         Helper helper = new Helper(mainActivityRule);
+
+        String testString = helper.randString();
+
         helper
-                .goConversations()
-                .goConversation()
-                .goSettings()
-                .setNickname("Testing")
-                .resetNickname();
-
+            .goConversations()
+            .goConversation()
+            .goSettings()
+                .setNickname(testString)
+                .resetNickname()
+            .goConversation()
+                .assertNoText(testString);
     }
-
-
-
-
 }
