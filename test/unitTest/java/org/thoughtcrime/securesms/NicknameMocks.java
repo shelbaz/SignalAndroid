@@ -2,6 +2,8 @@ package org.thoughtcrime.securesms;
 
 import android.content.Context;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -33,6 +35,7 @@ public class NicknameMocks extends BaseUnitTest {
         recipient = mock(Recipient.class);
         recipientDatabase = mock(RecipientDatabase.class);
     }
+
 
     protected void setupSetNicknameMethod() {
         when(recipientDatabase.setNickname(recipient, "test" )).thenReturn(true)
