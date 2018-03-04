@@ -34,7 +34,7 @@ abstract class BaseHelper<T> {
             openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
 
             onView(ViewMatchers.withText(R.string.text_secure_normal__menu_settings))
-                    .perform(click());
+                .perform(click());
 
             final String[] stringHolder = {null};
             onView(withId(R.id.number)).perform(ViewActions.getTextFromView(stringHolder));
@@ -53,7 +53,7 @@ abstract class BaseHelper<T> {
     public T assertId(int id) {
         try {
             onView(withId(id))
-                    .check(matches(isDisplayed()));
+                .check(matches(isDisplayed()));
         } catch (AmbiguousViewMatcherException e) {}
 
         return (T)this;
@@ -62,7 +62,7 @@ abstract class BaseHelper<T> {
     public T assertText(String text) {
         try {
             onView(withText(text))
-                    .check(matches(isDisplayed()));
+                .check(matches(isDisplayed()));
         } catch (AmbiguousViewMatcherException e) {}
 
         return (T)this;
@@ -71,7 +71,7 @@ abstract class BaseHelper<T> {
     public T assertNoText(String text) {
         try {
             onView(withText(text))
-                    .check(matches(isDisplayed()));
+                .check(matches(isDisplayed()));
 
             throw new Error("Helper.assertNoText: View found matching \"" + text + "\"");
         } catch (NoMatchingViewException e) {}
