@@ -120,6 +120,7 @@ public class ConversationItem extends LinearLayout
   private TextView           groupSenderProfileName;
   private View               groupSenderHolder;
   private ImageView          insecureImage;
+  private ImageView          pinnedIndicator;
   private AvatarImageView    contactPhoto;
   private DeliveryStatusView deliveryStatusIndicator;
   private AlertView          alertView;
@@ -165,6 +166,7 @@ public class ConversationItem extends LinearLayout
     this.groupSender             =            findViewById(R.id.group_message_sender);
     this.groupSenderProfileName  =            findViewById(R.id.group_message_sender_profile);
     this.insecureImage           =            findViewById(R.id.insecure_indicator);
+    this.pinnedIndicator         =            findViewById(R.id.pinned_indicator);
     this.deliveryStatusIndicator =            findViewById(R.id.delivery_status);
     this.alertView               =            findViewById(R.id.indicators_parent);
     this.contactPhoto            =            findViewById(R.id.contact_photo);
@@ -435,6 +437,7 @@ public class ConversationItem extends LinearLayout
     indicatorText.setVisibility(View.GONE);
 
     insecureImage.setVisibility(messageRecord.isSecure() ? View.GONE : View.VISIBLE);
+    pinnedIndicator.setVisibility(messageRecord.isPinned() ? View.VISIBLE : View.GONE);
     bodyText.setCompoundDrawablesWithIntrinsicBounds(0, 0, messageRecord.isKeyExchange() ? R.drawable.ic_menu_login : 0, 0);
     dateText.setText(DateUtils.getExtendedRelativeTimeSpanString(getContext(), locale, messageRecord.getTimestamp()));
 
@@ -599,9 +602,19 @@ public class ConversationItem extends LinearLayout
     }
   }
 
-  private class ThumbnailClickListener implements SlideClickListener {
+  public class ThumbnailClickListener implements SlideClickListener {
+    boolean pin = false;
+
+    public ThumbnailClickListener() {}
+
+    public ThumbnailClickListener(MessageRecord record) {
+        conversationRecipient = record.getRecipient();
+        messageRecord         = record;
+        pin                   = true;
+    }
+
     public void onClick(final View v, final Slide slide) {
-      if (shouldInterceptClicks(messageRecord) || !batchSelected.isEmpty()) {
+      if (shouldInterceptClicks(messageRecord) || !batchSelected.isEmpty() && !this.pin) {
         performClick();
       } else if (MediaPreviewActivity.isContentTypeSupported(slide.getContentType()) && slide.getUri() != null) {
         Intent intent = new Intent(context, MediaPreviewActivity.class);

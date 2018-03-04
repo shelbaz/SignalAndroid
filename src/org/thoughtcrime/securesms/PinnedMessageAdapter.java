@@ -17,68 +17,137 @@
 package org.thoughtcrime.securesms;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import org.thoughtcrime.securesms.components.ThumbnailView;
 import org.thoughtcrime.securesms.crypto.MasterSecret;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.MmsSmsDatabase;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
+import org.thoughtcrime.securesms.database.model.MmsMessageRecord;
+import org.thoughtcrime.securesms.mms.GlideRequests;
 import org.thoughtcrime.securesms.util.DateUtils;
+import org.thoughtcrime.securesms.util.views.Stub;
 
 import java.util.Locale;
 
-public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdapter.ViewHolder> {
-    private Cursor                      dataCursor;
-    private Context                     context;
-    private MmsSmsDatabase              db;
-    private MasterSecret                masterSecret;
-    private RecyclerView.Adapter        adapter;
-    private View                        view;
+import static android.widget.RelativeLayout.ALIGN_PARENT_LEFT;
+import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
 
+public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdapter.ViewHolder> {
+    private Context              context;
+    private Cursor               dataCursor;
+    private GlideRequests        glideRequests;
+    private MasterSecret         masterSecret;
+    private MmsSmsDatabase       db;
+    private View                 view;
+
+    public PinnedMessageAdapter(Activity mContext, Cursor cursor, MasterSecret masterSecret, GlideRequests glideRequests) {
+        this.context       = mContext;
+        this.dataCursor    = cursor;
+        this.db            = DatabaseFactory.getMmsSmsDatabase(mContext);
+        this.glideRequests = glideRequests;
+        this.masterSecret  = masterSecret;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private Stub<ThumbnailView> mediaThumbnailStub;
         public TextView messageContent;
         public TextView recipient;
         public TextView time;
+        public View wrapper;
 
         public ViewHolder(View v) {
             super(v);
-            messageContent = (TextView) v.findViewById(R.id.pinned_message_body);
-            recipient      = (TextView) v.findViewById(R.id.pinned_message_recipient);
-            time           = (TextView) v.findViewById(R.id.conversation_item_date);
+            this.mediaThumbnailStub = new Stub<>(v.findViewById(R.id.pinned_image_view_stub));
+            this.messageContent     = v.findViewById(R.id.pinned_message_body);
+            this.recipient          = v.findViewById(R.id.pinned_message_recipient);
+            this.time               = v.findViewById(R.id.conversation_item_date);
+            this.wrapper            = v.findViewById(R.id.pinned_message_wrapper);
         }
-    }
-
-    public PinnedMessageAdapter(Activity mContext, Cursor cursor, MasterSecret masterSecret) {
-        dataCursor        = cursor;
-        context           = mContext;
-        db                = DatabaseFactory.getMmsSmsDatabase(mContext);
-        this.masterSecret = masterSecret;
-        this.adapter      = this;
-
     }
 
     @Override
     public PinnedMessageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.v("pinFragment", "on create view holder");
-
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View theInflatedView = inflater.inflate(R.layout.pinned_conversation_item_sent, null);
+        LayoutInflater inflater        = LayoutInflater.from(parent.getContext());
+        View           theInflatedView = inflater.inflate(R.layout.pinned_conversation_item, null);
         this.view = theInflatedView;
-
         return new ViewHolder(theInflatedView);
+    }
+
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        dataCursor.moveToPosition(position);
+        MmsSmsDatabase.Reader reader = db.readerFor(dataCursor, masterSecret);
+        MessageRecord         record = reader.getCurrent();
+        this.setMessageView(record, holder);
+
+        if (record.isMms()) {
+            ConversationItem                        conversationItem       = new ConversationItem(context);
+            ConversationItem.ThumbnailClickListener thumbnailClickListener = conversationItem.new ThumbnailClickListener(record);
+
+            holder.mediaThumbnailStub.get().setImageResource(masterSecret, glideRequests,
+                    ((MmsMessageRecord) record).getSlideDeck().getThumbnailSlide(),
+                    true, true);
+            holder.mediaThumbnailStub.get().setThumbnailClickListener(thumbnailClickListener);
+            holder.mediaThumbnailStub.get().setVisibility(View.VISIBLE);
+        }
+
+        holder.messageContent.setText(record.getDisplayBody().toString());
+        holder.time.setText(DateUtils.getExtendedRelativeTimeSpanString(context, new Locale("en", "CA"),
+                record.getTimestamp()));
+
+        holder.wrapper.setOnLongClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage(R.string.PinnedMessageActivity_unpin_prompt);
+            builder.setCancelable(true);
+
+            builder.setPositiveButton(R.string.yes, (dialog, id) -> {
+                PinnedMessageHandler handler = new PinnedMessageHandler(context);
+                handler.handleUnpinMessage(record, handler.getAppropriateDatabase(record));
+
+                ((ViewGroup)v.getParent().getParent()).removeAllViews();
+                dialog.cancel();
+            });
+
+            builder.setNegativeButton(R.string.no, (dialog, id) -> dialog.cancel());
+            builder.create().show();
+            return true;
+        });
+    }
+
+    private void setMessageView(MessageRecord record, ViewHolder viewHolder) {
+        LayoutParams lp = (LayoutParams) viewHolder.wrapper.getLayoutParams();
+        if (record.isOutgoing()) {
+            lp.addRule(ALIGN_PARENT_RIGHT);
+            viewHolder.wrapper.setLayoutParams(lp);
+
+            viewHolder.recipient.setText(R.string.PinnedMessageActivity_own_name);
+            return;
+        } else {
+            lp.addRule(ALIGN_PARENT_LEFT);
+            viewHolder.wrapper.setLayoutParams(lp);
+        }
+
+        String messageSenderName = record.getRecipient().getName();
+        if (messageSenderName == null) {
+            messageSenderName = record.getRecipient().getAddress().toString();
+        }
+        viewHolder.recipient.setText(messageSenderName);
+    }
+
+    @Override
+    public int getItemCount() {
+        return (dataCursor == null) ? 0 : dataCursor.getCount();
     }
 
     public Cursor swapCursor(Cursor cursor) {
@@ -91,51 +160,5 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
             this.notifyDataSetChanged();
         }
         return oldCursor;
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        dataCursor.moveToPosition(position);
-        Log.v("pinFragment", "onbindViewHolder");
-
-        MmsSmsDatabase.Reader reader = db.readerFor(dataCursor, masterSecret);
-        MessageRecord record = reader.getCurrent();
-
-        this.setMessageView(record, holder);
-
-        holder.messageContent.setText(record.getDisplayBody().toString());
-        holder.time.setText(DateUtils.getExtendedRelativeTimeSpanString(context, new Locale("en", "CA"),
-                record.getTimestamp()));
-
-        Button unpinButton = (Button)view.findViewById(R.id.unpin_button);
-        unpinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PinnedMessagesHandler handler = new PinnedMessagesHandler(context);
-                handler.handleUnpinMessage(record, DatabaseFactory.getSmsDatabase(context));
-
-                ((ViewGroup)v.getParent().getParent().getParent()).removeAllViews();
-            }
-        });
-    }
-
-    private void setMessageView(MessageRecord record, ViewHolder viewHolder) {
-        if (record.isOutgoing()) {
-            viewHolder.recipient.setText(R.string.PinnedMessageActivity_own_name);
-            return;
-        }
-
-        String messageSenderName = record.getRecipient().getName();
-
-        if (messageSenderName == null) {
-            messageSenderName = record.getRecipient().getAddress().toString();
-        }
-
-        viewHolder.recipient.setText(messageSenderName);
-    }
-
-    @Override
-    public int getItemCount() {
-        return (dataCursor == null) ? 0 : dataCursor.getCount();
     }
 }

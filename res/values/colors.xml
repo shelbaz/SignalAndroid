@@ -10,11 +10,11 @@
     <color name="textsecure_primary_alpha33">@color/signal_primary_alpha33</color>
 
     <color name="white">#ffffffff</color>
-    <color name="black">#ff000000</color>
+    <color name="black">#000000</color>
     <color name="gray5">#ffeeeeee</color>
     <color name="gray10">#ffdddddd</color>
-    <color name="gray12">#ffe0e0e0</color>
-    <color name="gray13">#ffababab</color>
+    <color name="gray12">#e0e0e0</color>
+    <color name="gray13">#ababab</color>
     <color name="gray20">#ffcccccc</color>
     <color name="gray27">#ffbbbbbb</color>
     <color name="gray50">#ff808080</color>

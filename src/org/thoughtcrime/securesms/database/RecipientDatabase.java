@@ -44,13 +44,13 @@ public class RecipientDatabase extends Database {
   private static final String REGISTERED              = "registered";
   private static final String PROFILE_KEY             = "profile_key";
   private static final String SYSTEM_DISPLAY_NAME     = "system_display_name";
-  private static final String SYSTEM_PHOTO_URI      = "system_contact_photo";
-  private static final String SYSTEM_PHONE_LABEL    = "system_phone_label";
-  private static final String SYSTEM_CONTACT_URI    = "system_contact_uri";
-  private static final String SIGNAL_PROFILE_NAME   = "signal_profile_name";
-  private static final String SIGNAL_PROFILE_AVATAR = "signal_profile_avatar";
-  private static final String PROFILE_SHARING       = "profile_sharing_approval";
-  private static final String NICKNAME              = "nick_name";
+  private static final String SYSTEM_PHOTO_URI        = "system_contact_photo";
+  private static final String SYSTEM_PHONE_LABEL      = "system_phone_label";
+  private static final String SYSTEM_CONTACT_URI      = "system_contact_uri";
+  private static final String SIGNAL_PROFILE_NAME     = "signal_profile_name";
+  private static final String SIGNAL_PROFILE_AVATAR   = "signal_profile_avatar";
+  private static final String PROFILE_SHARING         = "profile_sharing_approval";
+  private static final String NICKNAME                = "nick_name";
 
   private static final String[] RECIPIENT_PROJECTION = new String[] {
       BLOCK, NOTIFICATION, VIBRATE, MUTE_UNTIL, COLOR, SEEN_INVITE_REMINDER, DEFAULT_SUBSCRIPTION_ID, EXPIRE_MESSAGES, REGISTERED,
@@ -119,7 +119,7 @@ public class RecipientDatabase extends Database {
           SIGNAL_PROFILE_NAME + " TEXT DEFAULT NULL, " +
           SIGNAL_PROFILE_AVATAR + " TEXT DEFAULT NULL, " +
           PROFILE_SHARING + " INTEGER DEFAULT 0, " +
-              NICKNAME + " TEXT DEFAULT 'null');";
+          NICKNAME + " TEXT DEFAULT 'null');";
 
   public RecipientDatabase(Context context, SQLiteOpenHelper databaseHelper) {
     super(context, databaseHelper);
@@ -174,7 +174,6 @@ public class RecipientDatabase extends Database {
     String  signalProfileAvatar   = cursor.getString(cursor.getColumnIndexOrThrow(SIGNAL_PROFILE_AVATAR));
     boolean profileSharing        = cursor.getInt(cursor.getColumnIndexOrThrow(PROFILE_SHARING))      == 1;
 
-
     MaterialColor color;
     byte[]        profileKey = null;
 
@@ -202,7 +201,7 @@ public class RecipientDatabase extends Database {
                                              profileKey, systemDisplayName, systemContactPhoto,
                                              systemPhoneLabel, systemContactUri,
                                              signalProfileName, signalProfileAvatar, profileSharing,
-                                              nickname));
+                                             nickname));
   }
 
   public BulkOperationsHandle resetAllSystemContactInfo() {
@@ -332,10 +331,15 @@ public class RecipientDatabase extends Database {
 
   private int processNicknameSqlRequest(ContentValues values, Address address) {
     SQLiteDatabase db = databaseHelper.getWritableDatabase();
-
-    int updated = db.update(TABLE_NAME, values, ADDRESS + " = ? ",
-            new String[] {address.serialize()});
-    return updated;
+    return db.update(
+      this.TABLE_NAME,
+      values,
+          ADDRESS + " = ? AND " +
+          NICKNAME + " NOT Like ? ",
+      new String[] {
+          address.serialize(),
+          values.getAsString(NICKNAME)
+      });
   }
 
   public void setRegistered(@NonNull Recipient recipient, RegisteredState registeredState) {
@@ -472,7 +476,6 @@ public class RecipientDatabase extends Database {
     private final String          signalProfileName;
     private final String          signalProfileAvatar;
     private final boolean         profileSharing;
-
 
     RecipientSettings(boolean blocked, long muteUntil,
                       @NonNull VibrateState vibrateState,

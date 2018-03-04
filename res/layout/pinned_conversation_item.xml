@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/conversation_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:focusable="true"
+    android:nextFocusLeft="@id/container"
+    android:nextFocusRight="@id/embedded_text_editor"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:background="#e5e5e5" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="6dp"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:id="@+id/pinned_message_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/pinned_message_recipient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:paddingBottom="4dp"
+                android:paddingLeft="10dp"
+                android:text="TextView"
+                android:textColor="@color/grey_500"
+                tools:text="John Doe" />
+
+            <LinearLayout
+                android:id="@+id/pinned_body_bubble"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/pinned_message_bubble"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/pinned_message_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=" Mango pickle lorem ipsum"
+                    android:textColorLink="@color/black"
+                    android:textSize="16sp" />
+
+                <ViewStub
+                    android:id="@+id/pinned_image_view_stub"
+                    android:layout_width="@dimen/media_bubble_height"
+                    android:layout_height="@dimen/media_bubble_height"
+                    android:layout="@layout/pinned_conversation_item_sent_thumbnail" />
+
+                <TextView
+                    android:id="@+id/conversation_item_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/grey_400"
+                    android:textSize="12sp"
+                    tools:text="Tue 10:50 AM" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

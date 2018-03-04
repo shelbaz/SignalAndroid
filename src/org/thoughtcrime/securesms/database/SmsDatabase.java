@@ -198,6 +198,16 @@ public class SmsDatabase extends MessagingDatabase {
     updateTypeBitmask(id, 0, Types.SECURE_MESSAGE_BIT);
   }
 
+  @Override
+  public void markAsPinned(long id) {
+    updateTypeBitmask(id, 0, Types.PINNED_MESSAGE_BIT);
+  }
+
+  @Override
+  public void markAsUnpinned(long id) {
+    updateTypeBitmask(id, Types.PINNED_MESSAGE_BIT, 0);
+  }
+
   public void markAsInsecure(long id) {
     updateTypeBitmask(id, Types.SECURE_MESSAGE_BIT, 0);
   }

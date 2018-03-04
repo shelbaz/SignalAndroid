@@ -6,10 +6,10 @@ import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.MessagingDatabase;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
 
-public class PinnedMessagesHandler {
+public class PinnedMessageHandler {
     Context context;
 
-    public PinnedMessagesHandler(Context context) {
+    public PinnedMessageHandler(Context context) {
         this.context = context;
     }
 
@@ -26,10 +26,18 @@ public class PinnedMessagesHandler {
     }
 
     public boolean handlePinMessage(final MessageRecord message, MessagingDatabase databaseToQuery) {
-        return databaseToQuery.pinMessage(message.getId());
+        boolean result = databaseToQuery.pinMessage(message.getId());
+        if (result) {
+            databaseToQuery.markAsPinned(message.getId());
+        }
+        return result;
     }
 
     public boolean handleUnpinMessage(final MessageRecord message, MessagingDatabase databaseToQuery) {
-        return databaseToQuery.unpinMessage(message.getId());
+        boolean result = databaseToQuery.unpinMessage(message.getId());
+        if (result) {
+            databaseToQuery.markAsUnpinned(message.getId());
+        }
+        return result;
     }
 }

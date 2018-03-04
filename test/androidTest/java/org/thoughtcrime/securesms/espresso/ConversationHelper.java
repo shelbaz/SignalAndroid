@@ -11,10 +11,11 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static android.support.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class ConversationHelper extends Helper<ConversationHelper> {
+public class ConversationHelper extends BaseRecyclerHelper<ConversationHelper> {
     ConversationHelper(HelperSecret s) {}
 
     private Boolean messageSelected = false;
@@ -28,11 +29,25 @@ public class ConversationHelper extends Helper<ConversationHelper> {
         return this;
     }
 
+    public ConversationHelper sendImage(String message) {
+        onView(withId(R.id.quick_camera_toggle))
+                .perform(click());
+        onView(withId(R.id.shutter_button))
+                .perform(click());
+        onView(withId(R.id.embedded_text_editor))
+                .perform(typeText(message));
+        onView(withId(R.id.send_button))
+                .perform(click());
+
+        return this;
+    }
+
     public ConversationHelper selectMessage(int position) {
         this.messageSelected = true;
 
         onView(withId(android.R.id.list))
-                .perform(actionOnItemAtPosition(position, longClick()));
+            .perform(scrollToPosition(position))
+            .perform(actionOnItemAtPosition(position, longClick()));
 
         return this;
     }

@@ -234,6 +234,7 @@
 
     <!-- PinnedMessageActivity -->
     <string name="PinnedMessageActivity_own_name">Me</string>
+    <string name="PinnedMessageActivity_unpin_prompt">Are you sure you want to unpin the message?</string>
 
     <!-- CreateProfileActivity -->
     <string name="CreateProfileActivity_your_profile_info">Your profile info</string>
@@ -797,6 +798,7 @@
     <!-- conversation_item -->
     <string name="conversation_item__mms_image_description">Media message</string>
     <string name="conversation_item__secure_message_description">Secure message</string>
+    <string name="conversation_item__pinned_message_description">Pinned message</string>
 
     <!-- conversation_item_sent -->
     <string name="conversation_item_sent__send_failed_indicator_description">Send Failed</string>
