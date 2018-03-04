@@ -111,6 +111,7 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
     this.address       = getIntent().getParcelableExtra(ADDRESS_EXTRA);
 
     Recipient recipient = Recipient.from(this, address, true);
+
     initializeToolbar();
     setHeader(recipient);
     recipient.addListener(this);

@@ -17,7 +17,7 @@ public class NicknameEspressoTest {
             new ActivityTestRule(ConversationListActivity.class, true, false);
 
     @Test
-    public void pageExists(){
+    public void pageExists() {
         Helper otherHelper = new Helper(mainActivityRule);
 
         otherHelper

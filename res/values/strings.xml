@@ -509,6 +509,9 @@
     <string name="RecipientPreferenceActivity_nickname_notset_successfully">Nickname has not been set successfully</string>
     <string name="RecipientPreferenceActivity_nickname_reset_successfully">Nickname has been reset successfully</string>
     <string name="RecipientPreferenceActivity_nickname_notreset_successfully">Nickname has not been reset successfully</string>
+    <string name="RecipientPreferenceActivity_setnickname">Set Nickname</string>
+    <string name="RecipientPreferenceActivity_resetnickname">Reset Nickname</string>
+    <string name="RecipientPreferenceActivity_username">Username</string>
 
 
     <!-- RecipientProvider -->

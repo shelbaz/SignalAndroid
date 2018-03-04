@@ -15,14 +15,6 @@ public class Helper extends BaseHelper<Helper> {
         return new ConversationsHelper(new HelperSecret());
     }
 
-    public PreferencesHelper resetNickname() {
-        return new PreferencesHelper(new HelperSecret());
-    }
-
-    public PreferencesHelper setNickname(String message) {
-        return new PreferencesHelper(new HelperSecret());
-    }
-
     /* ASSERTIONS */
 
     public T assertId(int id) {

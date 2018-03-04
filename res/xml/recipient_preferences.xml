@@ -34,15 +34,15 @@
                 android:persistent="false"
                 app:numColumns="5" />
         <EditTextPreference
-            android:defaultValue="Username"
+            android:defaultValue="@string/RecipientPreferenceActivity_username"
             android:key="pref_key_change_nickname"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Set Nickname" />
+            android:title="@string/RecipientPreferenceActivity_setnickname"/>
         <Preference
             android:key="pref_key_reset_nickname"
             android:persistent="false"
-            android:title="Reset Nickname" />
+            android:title="@string/RecipientPreferenceActivity_resetnickname" />
     </PreferenceCategory>
 
     <PreferenceCategory android:key="divider" android:layout="@layout/preference_divider"/>

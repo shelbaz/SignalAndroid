@@ -35,9 +35,8 @@ public class NicknameMocks extends BaseUnitTest {
         recipientDatabase = mock(RecipientDatabase.class);
     }
 
-
     protected void setupSetNicknameMethod() {
-        when(recipientDatabase.setNickname(recipient, "test" )).thenReturn(true)
+        when(recipientDatabase.setNickname(recipient, "test")).thenReturn(true)
                 .thenReturn(false);
         when(recipientDatabase.setNickname(recipient, "new test")).thenReturn(true)
                 .thenReturn(false);

@@ -248,7 +248,7 @@ public class RecipientDatabase extends Database {
       recipient.resolve().setNickname(nickname);
       return true;
     }
-    else {return false;}
+    return false;
   }
 
   public void setRingtone(@NonNull Recipient recipient, @Nullable Uri notification) {
@@ -331,15 +331,9 @@ public class RecipientDatabase extends Database {
 
   private int processNicknameSqlRequest(ContentValues values, Address address) {
     SQLiteDatabase db = databaseHelper.getWritableDatabase();
-    return db.update(
-      this.TABLE_NAME,
-      values,
-          ADDRESS + " = ? AND " +
-          NICKNAME + " NOT Like ? ",
-      new String[] {
-          address.serialize(),
-          values.getAsString(NICKNAME)
-      });
+    int updated = db.update(TABLE_NAME, values, ADDRESS + " = ? ",
+                        new String[] {address.serialize()});
+       return updated;
   }
 
   public void setRegistered(@NonNull Recipient recipient, RegisteredState registeredState) {

@@ -118,7 +118,6 @@ public class Recipient implements RecipientModifiedListener {
     this.color                = null;
     this.resolving            = true;
 
-
     if (stale != null) {
       this.name                  = stale.name;
       this.nickname              = stale.nickname;
@@ -267,7 +266,7 @@ public class Recipient implements RecipientModifiedListener {
       return Util.join(names, ", ");
     }
 
-    if (this.nickname != null) return this.nickname;
+    if (this.nickname != null) {return this.nickname;}
 
     return this.name;
   }
