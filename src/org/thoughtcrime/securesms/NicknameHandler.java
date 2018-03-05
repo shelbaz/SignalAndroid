@@ -22,7 +22,6 @@ public class NicknameHandler {
     /**
      * This method is implemented for only testing purposes inorder
      * to pass mocked database object
-     *
      * @param recipientDatabase
      * @return
      */
@@ -47,8 +46,7 @@ public class NicknameHandler {
   
     public boolean removeNickname(Recipient recipient) {
         this.setupDatabaseHandler();
-        this.recipientDatabase.setNickname(recipient, null);
-        return true;
+        return this.recipientDatabase.setNickname(recipient, null);
     }
 
     /**

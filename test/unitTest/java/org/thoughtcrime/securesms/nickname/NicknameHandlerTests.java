@@ -1,5 +1,7 @@
 package org.thoughtcrime.securesms.nickname;
 
+import android.support.annotation.Nullable;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.thoughtcrime.securesms.NicknameHandler;
@@ -45,7 +47,7 @@ public class NicknameHandlerTests extends NicknameMocks {
                 .setNickname(recipient, "test");
 
         assertTrue(resNewNickname);
-        assertFalse(resSameNickname);
+        assertTrue(resSameNickname);
         verify(recipientDatabase, times(2)).setNickname(recipient,"test");
     }
 
@@ -67,12 +69,26 @@ public class NicknameHandlerTests extends NicknameMocks {
                 .setNickname(recipient, "new test");
 
         assertTrue(resNewNickname);
-        assertFalse(resSameNickname);
+        assertTrue(resSameNickname);
 
         assertTrue(resNewNicknameNewInput);
-        assertFalse(resNewNicknameSameNewInput);
+        assertTrue(resNewNicknameSameNewInput);
 
         verify(recipientDatabase, times(2)).setNickname(recipient,"test");
         verify(recipientDatabase, times(2)).setNickname(recipient,"new test");
+    }
+
+    @Test
+    public void removeNickname() {
+        super.setupSetNicknameMethod();
+
+        NicknameHandler handler = new NicknameHandler(super.context);
+        boolean resRemoveNickname = handler.setRecipientDatabase(DatabaseFactory.getRecipientDatabase(super.context))
+                .removeNickname(recipient);
+
+        assertTrue(resRemoveNickname);
+        verify(recipientDatabase, times(1)).setNickname(recipient, null);
+
+
     }
 }

@@ -153,6 +153,7 @@ class RecipientProvider {
 
   static class RecipientDetails {
     @Nullable final String               name;
+                    String               nickname;
     @Nullable final String               customLabel;
     @Nullable final Uri                  systemContactPhoto;
     @Nullable final Uri                  contactUri;
@@ -196,7 +197,7 @@ class RecipientProvider {
       this.profileAvatar         = settings     != null ? settings.getProfileAvatar() : null;
       this.profileSharing        = settings     != null && settings.isProfileSharing();
       this.systemContact         = systemContact;
-
+      this.nickname              = settings     != null ? settings.getNickname(): null;
       if (name == null && settings != null) this.name = settings.getSystemDisplayName();
       else                                  this.name = name;
     }
