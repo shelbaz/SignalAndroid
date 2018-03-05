@@ -269,7 +269,7 @@ public class Recipient implements RecipientModifiedListener {
       return Util.join(names, ", ");
     }
 
-    if (this.nickname != null ) {return this.nickname;}
+    if (this.nickname != null) return this.nickname;
 
     return this.name;
   }
