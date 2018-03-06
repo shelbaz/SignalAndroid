@@ -31,6 +31,7 @@ import org.thoughtcrime.securesms.components.ThumbnailView;
 import org.thoughtcrime.securesms.crypto.MasterSecret;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.MmsSmsDatabase;
+import org.thoughtcrime.securesms.database.model.MediaMmsMessageRecord;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.database.model.MmsMessageRecord;
 import org.thoughtcrime.securesms.mms.GlideRequests;
@@ -91,7 +92,7 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
         MessageRecord         record = reader.getCurrent();
         this.setMessageView(record, holder);
 
-        if (record.isMms()) {
+        if (record.isMms() && ((MmsMessageRecord) record).getSlideDeck().getSlides().size() != 0) {
             ConversationItem                        conversationItem       = new ConversationItem(context);
             ConversationItem.ThumbnailClickListener thumbnailClickListener = conversationItem.new ThumbnailClickListener(record);
 
