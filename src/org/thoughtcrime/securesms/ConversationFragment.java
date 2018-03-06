@@ -60,6 +60,7 @@ import org.thoughtcrime.securesms.database.RecipientDatabase;
 import org.thoughtcrime.securesms.database.loaders.ConversationLoader;
 import org.thoughtcrime.securesms.database.model.MediaMmsMessageRecord;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
+import org.thoughtcrime.securesms.database.model.MmsMessageRecord;
 import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.mms.OutgoingMediaMessage;
 import org.thoughtcrime.securesms.mms.Slide;
@@ -334,7 +335,7 @@ public class ConversationFragment extends Fragment
 
     if (pin) {
       // Blocking Video and Audio pinning Temporarily
-        if(message.isMms()) {
+        if(message.isMms() && ((MmsMessageRecord) message).getSlideDeck().getSlides().size() != 0) {
           MediaMmsMessageRecord mediaMessage = (MediaMmsMessageRecord) message;
           if (!mediaMessage.getSlideDeck().getThumbnailSlide().getContentType().contains("image")) {
             showToast("You can only pin image type mms!");
