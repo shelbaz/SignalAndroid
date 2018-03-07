@@ -108,6 +108,7 @@ public class ConversationFragment extends Fragment
   private View                        composeDivider;
   private View                        scrollToBottomButton;
   private TextView                    scrollDateHeader;
+  private int x                       =1;
 
   @Override
   public void onCreate(Bundle icicle) {
@@ -334,16 +335,7 @@ public class ConversationFragment extends Fragment
     databaseToQuery  = pinHandler.getAppropriateDatabase(message);
 
     if (pin) {
-      // Blocking Video and Audio pinning Temporarily
-        if(message.isMms() && ((MmsMessageRecord) message).getSlideDeck().getSlides().size() != 0) {
-          MediaMmsMessageRecord mediaMessage = (MediaMmsMessageRecord) message;
-          if (!mediaMessage.getSlideDeck().getThumbnailSlide().getContentType().contains("image")) {
-            showToast("You can only pin image type mms!");
-            return;
-          }
-        }
         result = pinHandler.handlePinMessage(message, databaseToQuery);
-
         if (result) {
           outputMessage = getString(R.string.ConversationFragment_pin_new);
         } else {
