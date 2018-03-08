@@ -60,10 +60,12 @@ import android.view.View.OnKeyListener;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.inputmethod.*;
 
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.protobuf.ByteString;
@@ -163,6 +165,7 @@ import org.thoughtcrime.securesms.util.concurrent.SettableFuture;
 import org.thoughtcrime.securesms.util.views.Stub;
 import org.whispersystems.libsignal.InvalidMessageException;
 import org.whispersystems.libsignal.util.guava.Optional;
+import org.thoughtcrime.securesms.components.InputPanel;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -546,6 +549,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     case R.id.menu_expiring_messages_off:
     case R.id.menu_expiring_messages:         handleSelectMessageExpiration();                   return true;
     case R.id.menu_view_pinned_messages:      handleViewPinnedMessages();                        return true;
+    case R.id.menu_search_conversation:       handleSearch();                                    return true;
     case android.R.id.home:                   handleReturnToConversationList();                  return true;
     }
 
@@ -741,6 +745,23 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     intent.putExtra(PinnedMessageActivity.ADDRESS_EXTRA, recipient.getAddress());
     intent.putExtra("THREADID", getThreadId());
     startActivity(intent);
+  }
+
+  private void handleSearch() {
+    hideKeyboard();
+
+//   FrameLayout frameLayout = (FrameLayout) findViewById(R.id.bottom_panel);
+//   frameLayout.setVisibility(View.GONE);
+
+  }
+
+  private void hideKeyboard() {
+    View view = this.getCurrentFocus();
+    if (view != null) {
+      InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+      imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
   }
 
   private void handleLeavePushGroup() {
