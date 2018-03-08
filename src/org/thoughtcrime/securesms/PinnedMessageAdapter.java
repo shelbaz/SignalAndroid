@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import org.thoughtcrime.securesms.components.AudioView;
+import org.thoughtcrime.securesms.components.DocumentView;
 import org.thoughtcrime.securesms.components.ThumbnailView;
 import org.thoughtcrime.securesms.crypto.MasterSecret;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
@@ -61,8 +63,9 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private Stub<ThumbnailView> mediaThumbnailStub;
         private Stub<AudioView>     audioViewStub;
+        private Stub<DocumentView>  documentViewStub;
+        private Stub<ThumbnailView> mediaThumbnailStub;
         public  TextView            messageContent;
         public  TextView            recipient;
         public  TextView            time;
@@ -71,6 +74,7 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
         public ViewHolder(View v) {
             super(v);
             this.audioViewStub      = new Stub<>(v.findViewById(R.id.pinned_audio_view_stub));
+            this.documentViewStub   = new Stub<>(v.findViewById(R.id.pinned_document_view_stub));
             this.mediaThumbnailStub = new Stub<>(v.findViewById(R.id.pinned_image_view_stub));
             this.messageContent     = v.findViewById(R.id.pinned_message_body);
             this.recipient          = v.findViewById(R.id.pinned_message_recipient);
@@ -87,7 +91,6 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
         return new ViewHolder(theInflatedView);
     }
 
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         dataCursor.moveToPosition(position);
@@ -96,6 +99,17 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
         MessageRecord         record           = reader.getCurrent();
 
         this.setMessageView(record, holder);
+
+        if (isDocument(record)) {
+            ConversationItem.ThumbnailClickListener thumbnailClickListener
+                    = conversationItem.new ThumbnailClickListener(record);
+            ConversationItem.AttachmentDownloadClickListener attachmentDownloadClickListener
+                    = conversationItem.new AttachmentDownloadClickListener();
+            holder.documentViewStub.get().setDocument(((MediaMmsMessageRecord)record).getSlideDeck().getDocumentSlide(), true);
+            holder.documentViewStub.get().setDocumentClickListener(thumbnailClickListener);
+            holder.documentViewStub.get().setDownloadClickListener(attachmentDownloadClickListener);
+            holder.documentViewStub.get().setVisibility(view.VISIBLE);
+        }
 
         if (isAudio(record)) {
             ConversationItem.AttachmentDownloadClickListener attachmentDownloadClickListener
@@ -106,7 +120,8 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
         }
 
         else if (isVideo(record)) {
-            ConversationItem.ThumbnailClickListener thumbnailClickListener = conversationItem.new ThumbnailClickListener(record);
+            ConversationItem.ThumbnailClickListener thumbnailClickListener
+                    = conversationItem.new ThumbnailClickListener(record);
 
             holder.mediaThumbnailStub.get().setImageResource(masterSecret, glideRequests,
                     ((MmsMessageRecord) record).getSlideDeck().getThumbnailSlide(),
@@ -164,6 +179,10 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
 
     private boolean isVideo(MessageRecord messageRecord) {
         return messageRecord.isMms() && ((MmsMessageRecord)messageRecord).getSlideDeck().getThumbnailSlide() != null;
+    }
+
+    private boolean isDocument(MessageRecord messageRecord) {
+        return messageRecord.isMms() && ((MmsMessageRecord)messageRecord).getSlideDeck().getDocumentSlide() != null;
     }
 
     @Override
