@@ -108,7 +108,6 @@ public class ConversationFragment extends Fragment
   private View                        composeDivider;
   private View                        scrollToBottomButton;
   private TextView                    scrollDateHeader;
-  private int x                       =1;
 
   @Override
   public void onCreate(Bundle icicle) {

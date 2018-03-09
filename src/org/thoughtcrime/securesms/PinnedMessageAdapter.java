@@ -108,17 +108,13 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
             holder.documentViewStub.get().setDocumentClickListener(thumbnailClickListener);
             holder.documentViewStub.get().setDownloadClickListener(attachmentDownloadClickListener);
             holder.documentViewStub.get().setVisibility(view.VISIBLE);
-        }
-
-        if (isAudio(record)) {
+        } else if (isAudio(record)) {
             ConversationItem.AttachmentDownloadClickListener attachmentDownloadClickListener
                     = conversationItem.new AttachmentDownloadClickListener();
             holder.audioViewStub.get().setAudio(masterSecret, ((MediaMmsMessageRecord)record).getSlideDeck().getAudioSlide(), true);
             holder.audioViewStub.get().setDownloadClickListener(attachmentDownloadClickListener);
             holder.audioViewStub.get().setVisibility(view.VISIBLE);
-        }
-
-        else if (isVideo(record)) {
+        } else if (isVideo(record)) {
             ConversationItem.ThumbnailClickListener thumbnailClickListener
                     = conversationItem.new ThumbnailClickListener(record);
 
