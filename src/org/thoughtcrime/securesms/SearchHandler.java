@@ -20,12 +20,12 @@ public class SearchHandler {
 
     //Used to add messageRecords when conversation gets new messages
     public void addMessageRecord(MessageRecord messageRecord) {
-
+        messageRecordList.addFirst(messageRecord);
     }
 
     //Used to delete messageRecords when user deleted message records from conversation
     public void deleteMessageRecord(int position) {
-
+        messageRecordList.remove(position);
     }
 
     //returns the next element in the searchResultList to scrollTo
