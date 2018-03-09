@@ -329,6 +329,19 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
     return -1;
   }
 
+  public void addMessagesToSearchHandler(SearchHandler searchHandler) {
+    int i = 0;
+
+    while (true) {
+      try {
+        MessageRecord messageRecord = getRecordForPositionOrThrow(i++);
+        searchHandler.messageRecordList.add(messageRecord);
+      } catch (IllegalStateException e) {
+        break;
+      }
+    }
+  }
+
   public void toggleSelection(MessageRecord messageRecord) {
     if (!batchSelected.remove(messageRecord)) {
       batchSelected.add(messageRecord);
