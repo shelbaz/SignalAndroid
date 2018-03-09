@@ -1,6 +1,8 @@
 package org.thoughtcrime.securesms;
 
 import org.thoughtcrime.securesms.database.model.MessageRecord;
+
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class SearchHandler {
@@ -24,10 +26,17 @@ public class SearchHandler {
     }
 
     //Used to delete messageRecords when user deleted message records from conversation
-    public void deleteMessageRecord(int position) {
-
+    public void deleteMessageRecord(long messageId) {
+        Iterator<MessageRecord> iterator = messageRecordList.iterator();
+        
+        while (iterator.hasNext()) {
+            MessageRecord messageRecord = iterator.next();
+            if (messageRecord.getId() == messageId) {
+                iterator.remove();
+                continue;
+            }
+        }
     }
-
     //returns the next element in the searchResultList to scrollTo
     public int getNextSearchResult(int index) {
         //not sure if we should increment from this class
@@ -40,5 +49,9 @@ public class SearchHandler {
 
     public int getResultNumber() {
         return searchResultList.size();
+    }
+
+    public boolean hasMessageRecords() {
+        return messageRecordList.size() > 0;
     }
 }

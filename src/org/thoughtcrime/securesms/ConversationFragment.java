@@ -392,6 +392,8 @@ public class ConversationFragment extends Fragment
                                 threadId = -1;
                                 listener.setThreadId(threadId);
                             }
+
+                            searchHandler.deleteMessageRecord(messageRecord.getId());
                         }
 
                         return null;
@@ -490,7 +492,6 @@ public class ConversationFragment extends Fragment
             getListAdapter().changeCursor(cursor);
 
             int lastSeenPosition = getListAdapter().findLastSeenPosition(lastSeen);
-
             getListAdapter().addMessagesToSearchHandler(searchHandler);
 
             if (firstLoad) {

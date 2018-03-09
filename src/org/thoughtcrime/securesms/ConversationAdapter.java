@@ -330,14 +330,15 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
   }
 
   public void addMessagesToSearchHandler(SearchHandler searchHandler) {
-    int i = 0;
-
-    while (true) {
-      try {
-        MessageRecord messageRecord = getRecordForPositionOrThrow(i++);
-        searchHandler.messageRecordList.add(messageRecord);
-      } catch (IllegalStateException e) {
-        break;
+    if (!searchHandler.hasMessageRecords()) {
+      int i = 0;
+      while (true) {
+        try {
+          MessageRecord messageRecord = getRecordForPositionOrThrow(i++);
+          searchHandler.messageRecordList.add(messageRecord);
+        } catch (IllegalStateException e) {
+          break;
+        }
       }
     }
   }
