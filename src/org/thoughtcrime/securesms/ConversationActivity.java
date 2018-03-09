@@ -44,6 +44,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.WindowCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.menu.MenuView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -251,6 +252,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private boolean    isDefaultSms          = true;
   private boolean    isMmsEnabled          = true;
   private boolean    isSecurityInitialized = false;
+  private boolean    isSearchMode          = false;
 
   private final IdentityRecordList identityRecords = new IdentityRecordList();
   private final DynamicTheme       dynamicTheme    = new DynamicTheme();
@@ -474,7 +476,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   public boolean onPrepareOptionsMenu(Menu menu) {
     MenuInflater inflater = this.getMenuInflater();
     menu.clear();
-
+    
     if (isSecureText) {
       if (recipient.getExpireMessages() > 0) {
         inflater.inflate(R.menu.conversation_expiring_on, menu);
@@ -549,7 +551,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     case R.id.menu_expiring_messages_off:
     case R.id.menu_expiring_messages:         handleSelectMessageExpiration();                   return true;
     case R.id.menu_view_pinned_messages:      handleViewPinnedMessages();                        return true;
-    case R.id.menu_search_conversation:       handleSearch();                                    return true;
+    case R.id.menu_search_conversation:       handleSearch(item);                                    return true;
     case android.R.id.home:                   handleReturnToConversationList();                  return true;
     }
 
@@ -747,13 +749,26 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     startActivity(intent);
   }
 
-  private void handleSearch() {
-    hideKeyboard();
+  private void handleSearch(MenuItem item) {
+    InputPanel bottomPanel = (InputPanel) findViewById(R.id.bottom_panel);
 
-//   FrameLayout frameLayout = (FrameLayout) findViewById(R.id.bottom_panel);
-//   frameLayout.setVisibility(View.GONE);
-
+    if(!this.isSearchMode) {
+      hideKeyboard();
+      bottomPanel.setVisibility(View.GONE);
+      // TODO add the logic to show the search bar
+    } else {
+      hideKeyboard();
+      // TODO shawn adds method to hide the search bar when the "Search Conversation" is clicked
+      bottomPanel.setVisibility(View.VISIBLE);
+    }
+    this.isSearchMode = !isSearchMode;
   }
+
+  /*
+  TODO add a method that when the user presses back button and they are in searchMode, the
+  Search mode will be closed and every thing will be back as it was before
+  make use of isSearchMode field and make sure you toggle it properly
+  */
 
   private void hideKeyboard() {
     View view = this.getCurrentFocus();
