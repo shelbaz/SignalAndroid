@@ -21,6 +21,16 @@ public class SearchHandler {
         searchResultList.clear();
 
         //search messageRecordList and push position (which is the index of the list) and    messageRecord into searchResultList
+        Iterator<MessageRecord> iterator = messageRecordList.iterator();
+        while (iterator.hasNext()) {
+            MessageRecord messageRecord = iterator.next();
+            if (messageRecord.getBody().getBody().toLowerCase().contains(term)) {
+                SearchResult searchResult = new SearchResult(searchIndex, messageRecord);
+                searchResultList.add(searchResult);
+            }
+            searchIndex++;
+        }
+
     }
 
     //Used to add messageRecords when conversation gets new messages
