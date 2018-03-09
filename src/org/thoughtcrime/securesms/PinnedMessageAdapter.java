@@ -27,6 +27,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import org.thoughtcrime.securesms.components.AudioView;
+import org.thoughtcrime.securesms.components.DocumentView;
 import org.thoughtcrime.securesms.components.ThumbnailView;
 import org.thoughtcrime.securesms.crypto.MasterSecret;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
@@ -60,14 +62,18 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private Stub<AudioView>     audioViewStub;
+        private Stub<DocumentView>  documentViewStub;
         private Stub<ThumbnailView> mediaThumbnailStub;
-        public TextView messageContent;
-        public TextView recipient;
-        public TextView time;
-        public View wrapper;
+        public  TextView            messageContent;
+        public  TextView            recipient;
+        public  TextView            time;
+        public  View                wrapper;
 
         public ViewHolder(View v) {
             super(v);
+            this.audioViewStub      = new Stub<>(v.findViewById(R.id.pinned_audio_view_stub));
+            this.documentViewStub   = new Stub<>(v.findViewById(R.id.pinned_document_view_stub));
             this.mediaThumbnailStub = new Stub<>(v.findViewById(R.id.pinned_image_view_stub));
             this.messageContent     = v.findViewById(R.id.pinned_message_body);
             this.recipient          = v.findViewById(R.id.pinned_message_recipient);
@@ -84,17 +90,33 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
         return new ViewHolder(theInflatedView);
     }
 
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         dataCursor.moveToPosition(position);
-        MmsSmsDatabase.Reader reader = db.readerFor(dataCursor, masterSecret);
-        MessageRecord         record = reader.getCurrent();
+        ConversationItem      conversationItem = new ConversationItem(context);
+        MmsSmsDatabase.Reader reader           = db.readerFor(dataCursor, masterSecret);
+        MessageRecord         record           = reader.getCurrent();
+
         this.setMessageView(record, holder);
 
-        if (record.isMms() && ((MmsMessageRecord) record).getSlideDeck().getSlides().size() != 0) {
-            ConversationItem                        conversationItem       = new ConversationItem(context);
-            ConversationItem.ThumbnailClickListener thumbnailClickListener = conversationItem.new ThumbnailClickListener(record);
+        if (isDocument(record)) {
+            ConversationItem.ThumbnailClickListener thumbnailClickListener
+                    = conversationItem.new ThumbnailClickListener(record);
+            ConversationItem.AttachmentDownloadClickListener attachmentDownloadClickListener
+                    = conversationItem.new AttachmentDownloadClickListener();
+            holder.documentViewStub.get().setDocument(((MediaMmsMessageRecord)record).getSlideDeck().getDocumentSlide(), true);
+            holder.documentViewStub.get().setDocumentClickListener(thumbnailClickListener);
+            holder.documentViewStub.get().setDownloadClickListener(attachmentDownloadClickListener);
+            holder.documentViewStub.get().setVisibility(view.VISIBLE);
+        } else if (isAudio(record)) {
+            ConversationItem.AttachmentDownloadClickListener attachmentDownloadClickListener
+                    = conversationItem.new AttachmentDownloadClickListener();
+            holder.audioViewStub.get().setAudio(masterSecret, ((MediaMmsMessageRecord)record).getSlideDeck().getAudioSlide(), true);
+            holder.audioViewStub.get().setDownloadClickListener(attachmentDownloadClickListener);
+            holder.audioViewStub.get().setVisibility(view.VISIBLE);
+        } else if (isVideo(record)) {
+            ConversationItem.ThumbnailClickListener thumbnailClickListener
+                    = conversationItem.new ThumbnailClickListener(record);
 
             holder.mediaThumbnailStub.get().setImageResource(masterSecret, glideRequests,
                     ((MmsMessageRecord) record).getSlideDeck().getThumbnailSlide(),
@@ -144,6 +166,18 @@ public class PinnedMessageAdapter extends RecyclerView.Adapter<PinnedMessageAdap
             messageSenderName = record.getRecipient().getAddress().toString();
         }
         viewHolder.recipient.setText(messageSenderName);
+    }
+
+    private boolean isAudio(MessageRecord messageRecord) {
+        return messageRecord.isMms() && ((MmsMessageRecord)messageRecord).getSlideDeck().getAudioSlide() != null;
+    }
+
+    private boolean isVideo(MessageRecord messageRecord) {
+        return messageRecord.isMms() && ((MmsMessageRecord)messageRecord).getSlideDeck().getThumbnailSlide() != null;
+    }
+
+    private boolean isDocument(MessageRecord messageRecord) {
+        return messageRecord.isMms() && ((MmsMessageRecord)messageRecord).getSlideDeck().getDocumentSlide() != null;
     }
 
     @Override
