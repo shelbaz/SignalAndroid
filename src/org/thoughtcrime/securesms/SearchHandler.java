@@ -8,21 +8,24 @@ import java.util.LinkedList;
 public class SearchHandler {
 
     public LinkedList<MessageRecord> messageRecordList;
-    public LinkedList<Integer> searchResultList;
+    public LinkedList<SearchResult> searchResultList;
+    private int searchIndex = 0;
 
     public SearchHandler() {
         messageRecordList = new LinkedList<MessageRecord>();
-        searchResultList = new LinkedList<Integer>();
+        searchResultList = new LinkedList<SearchResult>();
     }
 
     public void search(String term) {
-        //reset searchResultList
-        //search messageRecordList and push positions into searchResultList
+        searchIndex = 0;
+        searchResultList.clear();
+
+        //search messageRecordList and push position (which is the index of the list) and    messageRecord into searchResultList
     }
 
     //Used to add messageRecords when conversation gets new messages
     public void addMessageRecord(MessageRecord messageRecord) {
-
+        messageRecordList.addFirst(messageRecord);
     }
 
     //Used to delete messageRecords when user deleted message records from conversation
@@ -37,10 +40,18 @@ public class SearchHandler {
             }
         }
     }
-    //returns the next element in the searchResultList to scrollTo
-    public int getNextSearchResult(int index) {
-        //not sure if we should increment from this class
-        return 0;
+    //returns the next position in the searchResultList to scrollTo
+    public SearchResult getNextResultPosition() {
+        if (searchIndex < getResultNumber()) return searchResultList.get(searchIndex++);
+
+        return null;
+    }
+
+    //returns the previous position in the searchResultList
+    public SearchResult getPreviousResultPosition() {
+        if (searchIndex-- > -1) return searchResultList.get(searchIndex--);
+
+        return null;
     }
 
     public boolean hasResults() {
@@ -53,5 +64,24 @@ public class SearchHandler {
 
     public boolean hasMessageRecords() {
         return messageRecordList.size() > 0;
+    }
+
+    //not sure if should create seperate class file, needs to be accessed outside
+    public class SearchResult {
+        private int position;
+        private MessageRecord messageRecord;
+
+        public SearchResult(int position, MessageRecord messageRecord) {
+            this.position = position;
+            this.messageRecord = messageRecord;
+        }
+
+        public int getPosition() {
+            return position;
+        }
+
+        public MessageRecord getMessageRecord() {
+            return messageRecord;
+        }
     }
 }
