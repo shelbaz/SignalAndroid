@@ -10,7 +10,7 @@ public class SearchHandler {
     public LinkedList<MessageRecord> messageRecordList;
     public LinkedList<SearchResult> searchResultList;
     private int searchIndex = 0;
-    private String searchedTerm = "encrypted";
+    private String searchedTerm = null;
 
     public SearchHandler() {
         messageRecordList = new LinkedList<MessageRecord>();
@@ -26,7 +26,7 @@ public class SearchHandler {
         Iterator<MessageRecord> iterator = messageRecordList.iterator();
         while (iterator.hasNext()) {
             MessageRecord messageRecord = iterator.next();
-            if (messageRecord.getBody().getBody().toLowerCase().contains(term)) {
+            if (messageRecord.getBody().getBody().toString().toLowerCase().contains(term)) {
                 SearchResult searchResult = new SearchResult(searchIndex, messageRecord);
                 searchResultList.add(searchResult);
             }

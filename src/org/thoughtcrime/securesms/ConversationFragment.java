@@ -360,7 +360,9 @@ public class ConversationFragment extends Fragment
         // }
 
         // this.showToast(outputMessage);
-        searchHandler.addSearchedResult(0, message);
+        // searchHandler.addSearchedResult(0, message);
+        searchHandler.search("test");
+        getListAdapter().updateSearchHandler(searchHandler);
         getListAdapter().notifyDataSetChanged();
     }
 
