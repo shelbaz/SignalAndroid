@@ -33,6 +33,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.util.AttributeSet;
@@ -240,6 +241,19 @@ public class ConversationItem extends LinearLayout
                                       groupSenderHolder.getWidth() - groupSenderProfileName.getPaddingRight(),
                                       groupSenderHolder.getPaddingTop() + groupSenderProfileName.getHeight());
       }
+    }
+  }
+
+  //highlight the text in the displayBody given the searched term
+  public void highlightText(MessageRecord messageRecord, String highlight) {
+    SpannableString str = new SpannableString(messageRecord.getDisplayBody());
+
+    //TODO if the highlight occurs more than once in a single messageRecord, have to loop and highlight all occurrences.
+    int index = str.toString().indexOf(highlight);
+
+    if (index > -1) {
+      str.setSpan(new BackgroundColorSpan(Color.YELLOW), index, index + highlight.length(), 0);
+      bodyText.setText(str);
     }
   }
 

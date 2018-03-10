@@ -101,6 +101,8 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
   private final @NonNull  Calendar          calendar;
   private final @NonNull  MessageDigest     digest;
 
+  private                 SearchHandler     searchHandler;
+
   protected static class ViewHolder extends RecyclerView.ViewHolder {
     public <V extends View & BindableConversationItem> ViewHolder(final @NonNull V itemView) {
       super(itemView);
@@ -151,6 +153,7 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
       this.db            = null;
       this.calendar      = null;
       this.digest        = MessageDigest.getInstance("SHA1");
+      this.searchHandler = null;
     } catch (NoSuchAlgorithmException nsae) {
       throw new AssertionError("SHA1 isn't supported!");
     }
@@ -162,7 +165,8 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
                              @NonNull Locale locale,
                              @Nullable ItemClickListener clickListener,
                              @Nullable Cursor cursor,
-                             @NonNull Recipient recipient)
+                             @NonNull Recipient recipient,
+                             @NonNull SearchHandler searchHandler)
   {
     super(context, cursor);
 
@@ -176,6 +180,7 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
       this.db            = DatabaseFactory.getMmsSmsDatabase(context);
       this.calendar      = Calendar.getInstance();
       this.digest        = MessageDigest.getInstance("SHA1");
+      this.searchHandler = searchHandler;
 
       setHasStableIds(true);
     } catch (NoSuchAlgorithmException nsae) {
@@ -194,6 +199,14 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
   protected void onBindItemViewHolder(ViewHolder viewHolder, @NonNull MessageRecord messageRecord) {
     long start = System.currentTimeMillis();
     viewHolder.getView().bind(masterSecret, messageRecord, glideRequests, locale, batchSelected, recipient);
+
+    //highlight searched messages if message is part of searched results
+    if (searchHandler.isSearchedMessage(messageRecord)) {
+      Log.w("DANIELYOO", "I FOUND A MESSAGE IN THE SEARCH RESULTS!");
+    // if (true) {
+      viewHolder.getView().highlightText(messageRecord, searchHandler.getSearchedTerm());
+    }
+
     Log.w(TAG, "Bind time: " + (System.currentTimeMillis() - start));
   }
 
@@ -368,7 +381,6 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
   private boolean hasThumbnail(MessageRecord messageRecord) {
     return messageRecord.isMms() && ((MmsMessageRecord)messageRecord).getSlideDeck().getThumbnailSlide() != null;
   }
-
 
   @Override
   public long getHeaderId(int position) {

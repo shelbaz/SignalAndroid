@@ -10,6 +10,7 @@ public class SearchHandler {
     public LinkedList<MessageRecord> messageRecordList;
     public LinkedList<SearchResult> searchResultList;
     private int searchIndex = 0;
+    private String searchedTerm = "encrypted";
 
     public SearchHandler() {
         messageRecordList = new LinkedList<MessageRecord>();
@@ -19,6 +20,7 @@ public class SearchHandler {
     public void search(String term) {
         searchIndex = 0;
         searchResultList.clear();
+        searchedTerm = term;
 
         //search messageRecordList and push position (which is the index of the list) and    messageRecord into searchResultList
     }
@@ -26,6 +28,10 @@ public class SearchHandler {
     //Used to add messageRecords when conversation gets new messages
     public void addMessageRecord(MessageRecord messageRecord) {
         messageRecordList.addFirst(messageRecord);
+    }
+
+    public void addSearchedResult(int position, MessageRecord messageRecord) {
+        searchResultList.addFirst(new SearchResult(position, messageRecord));
     }
 
     //Used to delete messageRecords when user deleted message records from conversation
@@ -66,7 +72,27 @@ public class SearchHandler {
         return messageRecordList.size() > 0;
     }
 
+    //TODO check if message record is a searchedResult
+    public boolean isSearchedMessage(MessageRecord searchedMessageRecord) {
+        Iterator<SearchResult> iterator = searchResultList.iterator();
+        
+        while (iterator.hasNext()) {
+            SearchResult messageRecord = iterator.next();
+            if (messageRecord.getMessageRecord().getId() == searchedMessageRecord.getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public String getSearchedTerm() {
+        return searchedTerm;
+    }
+
     //not sure if should create seperate class file, needs to be accessed outside
+
+    //currently bind in conversationAdapter doesn't pass the position. implement this if it passes position to get easier search
     public class SearchResult {
         private int position;
         private MessageRecord messageRecord;
